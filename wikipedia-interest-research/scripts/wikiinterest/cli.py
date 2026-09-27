@@ -285,7 +285,8 @@ def cmd_views(args) -> int:
         charts.render_views_chart([r["period"] for r in rows], {c: [r.get(c, 0) for r in rows] for c in plot_cols},
                                   note.splitlines()[0].lstrip("# "), png)
         note += f"\nChart: {png.resolve()}"
-    print(render.views_table(rows, cols, str(out.resolve()), note))
+    totals = {c: int(sum(r.get(c, 0) for r in rows)) for c in cols if not c.startswith("share/M")}
+    print(render.views_table(rows, cols, str(out.resolve()), note, totals))
     return EXIT_OK if columns else EXIT_NOT_FOUND
 
 

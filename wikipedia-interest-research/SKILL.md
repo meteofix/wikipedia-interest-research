@@ -19,8 +19,11 @@ language editions, run the commands, and explain the results honestly.
 
 - Never calculate numbers yourself and never write your own code or curl calls to get or
   analyze data. Every number you give the user must be copied from command output — never read
-  numbers off charts (run `views` for monthly figures) and never derive new ones (ratios like
-  "2.5× more", differences, sums).
+  numbers off charts (run `views` for monthly figures) and never derive new ones. This includes
+  ratios and multipliers ("2.5× more", "6× higher") and totals/sums across rows you were not
+  given directly (`views` prints a total row when relevant) — Haiku's mental arithmetic on these
+  is frequently wrong even when the intent is right, so state each number exactly as printed
+  instead, e.g. "151 vs 24 views/day" rather than "6× higher".
 - Don't write or run your own code (Python, matplotlib, curl, spreadsheets) — not even for
   charts: use the PNGs from `analyze`, or `views ... --chart` for custom periods.
 - Run commands from this skill's directory: `uv run scripts/wiki.py <command>` (the first run

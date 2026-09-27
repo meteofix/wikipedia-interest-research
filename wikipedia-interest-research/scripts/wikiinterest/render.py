@@ -68,8 +68,9 @@ def analysis_summary(r: dict) -> str:
                 bits.append(f"average yearly change over the window: {fmt_pct(m['cagr_rel'])}")
             prof = m.get("seasonal_profile")
             if prof and len(ok) <= 6:
-                bits.append("seasonal profile, 100 = average month: " + " ".join(
-                    f"{_MONTHS[i][:3]} {v}" for i, v in enumerate(prof)))
+                bits.append("seasonal profile, % vs the average month (already computed, do not "
+                            "recompute or reinterpret the numbers): " + " ".join(
+                    f"{_MONTHS[i][:3]} {v - 100:+d}%" for i, v in enumerate(prof)))
             if m.get("peak_month"):
                 bits.append(f"seasonal peak in {_MONTHS[m['peak_month'] - 1]} (profile amplitude "
                             f"{fmt_pct(m['seasonality_amplitude'], signed=False)})")
@@ -208,7 +209,8 @@ def find_summary(results: list[dict], sites: list) -> str:
     return "\n".join(lines) + "\n"
 
 
-def views_table(rows: list[dict], columns: list[str], csv_path: str, note: str) -> str:
+def views_table(rows: list[dict], columns: list[str], csv_path: str, note: str,
+                totals: dict[str, int] | None = None) -> str:
     lines = [note, "", "| period | " + " | ".join(columns) + " |", "|---|" + "---|" * len(columns)]
     show = rows if len(rows) <= 40 else rows[:10] + [None] + rows[-20:]
     for row in show:
@@ -216,6 +218,8 @@ def views_table(rows: list[dict], columns: list[str], csv_path: str, note: str) 
             lines.append("| … | " + " | ".join("…" for _ in columns) + " |")
             continue
         lines.append(f"| {row['period']} | " + " | ".join(str(row.get(c, '')) for c in columns) + " |")
+    if totals:
+        lines.append("| **total (sum of all rows above)** | " + " | ".join(str(totals.get(c, "")) for c in columns) + " |")
     lines += ["", f"CSV: {csv_path}"]
     return "\n".join(lines) + "\n"
 
