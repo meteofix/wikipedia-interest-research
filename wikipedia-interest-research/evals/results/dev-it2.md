@@ -83,7 +83,7 @@ Rates show k/n and a 95% Wilson interval. `noskill` excludes U1/U2 from the univ
 | dev-004 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 3 |  |
 | dev-005 | skill | 1 | ✓ | ✓ | ✗ | ✗ | ✓ | ✓ | – | ✓ | ✗ | 3 | 70%, 27% |
 | dev-006 | skill | 1 | ✓ | ✓ | ✗ | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | 6 | 127, 40, 40 |
-| dev-007 | skill | 1 | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | 18 | ; inline code: cd /Users/dmytro.vashchuk/repos/pes_task_1_private/eval-runs/dev-it2/skill/dev-007/run1/outputs/20260927-201651-guitar-p; wrote code file: /Users/dmytro.vashchuk/repos/pes_task_1_private/eval-runs/dev-it2/skill/dev-007/run1/outputs/20260927-201651-guitar-piano-ukulele-pl-de-es-pt/matrix_viz.py |
+| dev-007 | skill | 1 | ✓ | ✗ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | 18 | ; inline code: cd ~/repos/pes_task_1_private/eval-runs/dev-it2/skill/dev-007/run1/outputs/20260927-201651-guitar-p; wrote code file: ~/repos/pes_task_1_private/eval-runs/dev-it2/skill/dev-007/run1/outputs/20260927-201651-guitar-piano-ukulele-pl-de-es-pt/matrix_viz.py |
 | dev-008 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | – | ✓ | ✓ | 3 |  |
 | dev-009 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 3 | +17, 50 |
 | dev-010 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✓ | 4 |  |
@@ -156,7 +156,7 @@ import csv
 from datetime import datetime
 
 # Читання даних
-with open('/Users/dmytro.vashchuk/repos/pes_t |
+with open('~/repos/pes_t |
 | dev-d02 | skill | 1 | ✓ | ✓ | ✗ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 5 | 43 |
 | dev-d03 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 4 |  |
 | dev-d04 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✗ | ✓ | ✓ | ✗ | 6 |  |

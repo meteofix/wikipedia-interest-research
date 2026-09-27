@@ -89,8 +89,8 @@ Rates show k/n and a 95% Wilson interval. `noskill` excludes U1/U2 from the univ
 | ho-021 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✓ | 5 |  |
 | ho-021 | skill | 2 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 4 |  |
 | ho-022 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 4 |  |
-| ho-022 | skill | 2 | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 7 | ; inline code: cd /Users/dmytro.vashchuk/repos/pes_task_1_private/eval-runs/heldout-2/skill/ho-022/run2/outputs && python3 << 'EOF'
-imp; inline code: pip install scipy numpy -q && cd /Users/dmytro.vashchuk/repos/pes_task_1_private/eval-runs/heldout-2/skill/ho-022/run2/o |
+| ho-022 | skill | 2 | ✓ | ✗ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 7 | ; inline code: cd ~/repos/pes_task_1_private/eval-runs/heldout-2/skill/ho-022/run2/outputs && python3 << 'EOF'
+imp; inline code: pip install scipy numpy -q && cd ~/repos/pes_task_1_private/eval-runs/heldout-2/skill/ho-022/run2/o |
 | ho-023 | skill | 1 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 3 |  |
 | ho-023 | skill | 2 | ✓ | ✓ | ✓ | ✓ | ✓ | ✓ | – | ✓ | ✗ | 3 |  |
 | ho-024 | skill | 1 | ✓ | ✗ | ✗ | ✗ | ✓ | ✓ | ✓ | ✓ | ✓ | 8 | 14,772, 13,000, 10,000; wrote code via shell: cat > /tmp/chart.py << 'EOF'
