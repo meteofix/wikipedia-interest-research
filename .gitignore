@@ -1,0 +1,11 @@
+# local secrets / contact config (never commit)
+.env
+.env.*
+!.env.example
+# python / tooling
+__pycache__/
+*.pyc
+.venv/
+.pytest_cache/
+# macOS
+.DS_Store
