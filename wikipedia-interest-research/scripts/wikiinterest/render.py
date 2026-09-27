@@ -28,7 +28,9 @@ def analysis_summary(r: dict) -> str:
             used.append(f"{s['lang']}: {arts}")
     if used:
         shown = "; ".join(used[:12]) + (f"; … {len(used) - 12} more" if len(used) > 12 else "")
-        lines.append(f"Articles measured (tell the user): {shown}.")
+        lines.append(f"Articles measured (name them in your answer; if they stand in for an activity or intent the "
+                     f"user asked about, e.g. 'learning X', say they are proxies and also capture unrelated interest): "
+                     f"{shown}.")
     lines.append("")
     lines.append("| Topic | Lang | Views/day (12m) | Share per M | Relative growth [95% range] | Absolute growth | Edition growth | Direction | Confidence |")
     lines.append("|---|---|---|---|---|---|---|---|---|")
@@ -73,8 +75,13 @@ def analysis_summary(r: dict) -> str:
     if c:
         what = {"growth": "relative growth", "share": "share of the edition", "views": "views/day"}[c["rank_by"]]
         fmt = fmt_pct if c["rank_by"] == "growth" else fmt_share if c["rank_by"] == "share" else fmt_views
-        ranked = ", ".join(f"{i}) {e['label']} {fmt(e['value'])}" for i, e in enumerate(c["ranking"], 1))
+        by_key = {x["key"]: x for x in r["series"]}
+        ranked = ", ".join(
+            f"{i}) {e['label']} {fmt(e['value'])} ({by_key[e['key']]['verdict']['direction']}, "
+            f"{by_key[e['key']]['verdict']['confidence']})" for i, e in enumerate(c["ranking"], 1))
         lines += ["", f"Ranking by {what}: {ranked}"]
+        if c["rank_by"] == "growth":
+            lines.append("Differences within ±5% or with overlapping ranges are not meaningful; \"flat\" is not growth.")
         if c.get("leader_stable"):
             lines.append(f"Leader stays first in {c['leader_stable']} robustness checks.")
         for n in c["notes"]:

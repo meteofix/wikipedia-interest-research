@@ -279,5 +279,7 @@ def cmd_report(args) -> int:
     print(f"PDF: {res['pdf']} ({res['pages']} page)")
     for w in res.get("warnings", []):
         print(f"- warning: {w}")
-    print("Next: share the PDF path with the user; mention it summarises the analysis above.")
+    print("Next: reply to the user with the full answer, not just the link: direct answer; per language/topic the "
+          "growth [range], direction and confidence; the data window; the articles measured (proxies called proxies); "
+          "key limitations; then the PDF path.")
     return EXIT_OK

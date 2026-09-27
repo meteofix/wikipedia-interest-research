@@ -28,7 +28,8 @@ language editions, run the commands, and explain the results honestly.
      there read and say which you picked.
    - Ask the user only when the topic is ambiguous and context does not decide it, when they
      mention "our/selected languages" without listing them, or when a topic has no article and
-     no sensible proxy. Otherwise proceed and state your assumptions.
+     no sensible proxy. Ask only for what is missing (period and metric have defaults).
+     Otherwise proceed and state your assumptions.
 2. **Find articles**: `uv run scripts/wiki.py find "<topic>" --langs pl,cs`
    - Check that the best match's description fits the user's meaning. On `AMBIGUOUS`, choose by
      context or ask.
