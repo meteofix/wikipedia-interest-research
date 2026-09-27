@@ -161,6 +161,33 @@ def local_search(http: Http, site: Site, query: str, limit: int = 3) -> list[dic
     return hits
 
 
+# A second meaning counts as a real alternative when it is covered by at least 10 Wikipedias
+# and by at least 30% as many as the main one (e.g. mercury the element vs the planet).
+RIVAL_MIN_WIKIS, RIVAL_MIN_RATIO = 10, 0.3
+
+
+def pick_best(query: str, cands: list[dict]) -> tuple[dict, list[dict]]:
+    """Main concept = the most widely covered candidate whose label matches the query.
+
+    Search order alone is not enough: for "jaguar" the car maker ranks above the animal.
+    Rivals are other matching meanings with substantial coverage (the query is ambiguous).
+    """
+    q = query.strip().lower()
+
+    def matches(c: dict) -> bool:
+        label = c["label"].lower()
+        return q in label or label in q
+
+    exact = [c for c in cands if c["label"].lower() == q]
+    related = [c for c in cands if matches(c)]
+    pool = exact or related or cands[:3]
+    best = max(pool, key=lambda c: c["wikipedias"])
+    rivals = [c for c in related if c is not best and c["wikipedias"] >= RIVAL_MIN_WIKIS
+              and c["wikipedias"] >= RIVAL_MIN_RATIO * max(best["wikipedias"], 1)
+              and c["description"].lower() != best["description"].lower()]
+    return best, rivals
+
+
 def find_topic(http: Http, index: SiteIndex, query: str, sites: list[Site], search_lang: str = "en",
                limit: int = 5) -> dict:
     """Wikidata candidates for a free-text topic plus article titles in the requested editions."""
@@ -176,17 +203,13 @@ def find_topic(http: Http, index: SiteIndex, query: str, sites: list[Site], sear
             continue
         cands.append({"qid": e.qid, "label": e.label(search_lang), "description": e.description(search_lang),
                       "wikipedias": wikipedia_count(e, index), "entity": e})
-    cands = cands[:limit]
-    result = {"query": query, "candidates": cands, "best": None, "ambiguous": False, "articles": []}
+    result = {"query": query, "candidates": cands[:limit], "best": None, "ambiguous": False, "articles": []}
     if not cands:
         return result
-    # The main concept is the most widely covered of the top search hits.
-    top = cands[:3]
-    best = max(top, key=lambda c: c["wikipedias"])
+    best, rivals = pick_best(query, cands)
+    if best not in result["candidates"]:
+        result["candidates"] = [best, *[c for c in result["candidates"] if c is not best]][:limit]
     result["best"] = best
-    rivals = [c for c in top if c is not best and c["wikipedias"] >= 10
-              and c["wikipedias"] >= 0.3 * max(best["wikipedias"], 1)
-              and c["description"].lower() != best["description"].lower()]
     result["ambiguous"] = bool(rivals)
     result["rivals"] = rivals
     ent: Entity = best["entity"]

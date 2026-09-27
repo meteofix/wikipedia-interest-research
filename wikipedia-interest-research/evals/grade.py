@@ -253,7 +253,8 @@ def analysis_signature(run_dir: Path):
     topics = {}
     for t in (res.get("params") or {}).get("topics") or []:
         if isinstance(t, dict) and t.get("id"):
-            topics[t["id"]] = "+".join(sorted(str(x) for x in (t.get("items") or []))) or str(t.get("label", "")).lower()
+            items = t.get("items") or [*(t.get("qids") or []), *(t.get("titles") or [])]
+            topics[t["id"]] = "+".join(sorted(str(x) for x in items)) or str(t.get("label", "")).lower()
     sig = []
     for s in res.get("series") or []:
         topic = topics.get(s.get("topic_id")) or str(s.get("topic_label", "")).lower()

@@ -36,6 +36,9 @@ language editions, run the commands, and explain the results honestly.
      related article as a clearly labelled proxy: `"Topic=Q123+pl:Related title"`.
    - A broad theme ("learning languages", "home fitness") is better measured by 2–5 core
      articles summed into one topic: `find "a" "b" "c"`, then `analyze "Label=Q1+Q2+Q3"`.
+   - Activities and intents ("learning X", "getting into Y") have no article of their own: you
+     measure them through proxy articles (e.g. the article about X). Say so in the answer —
+     which article stands in for what the user asked, and that it also captures other interest.
 3. **Analyze**: `uv run scripts/wiki.py analyze Q123 --langs pl,cs`
    - Period: default 36 full months; "last two years" → `--months 24` (growth needs ≥ 24).
    - Compare topics: `analyze Q1 Q2 Q3 --langs uk`. User thresholds: `--min-growth 15
@@ -77,9 +80,11 @@ language editions, run the commands, and explain the results honestly.
 1. Direct answer in 1–2 sentences with the key numbers.
 2. Per language/topic: views/day, relative growth [95% range], direction, confidence.
 3. Why we are (not) confident: 1–3 reasons from the output.
-4. Assumptions and limitations: window, which articles or proxies represent the topic, languages
-   without an article, interest is not willingness to pay, a language is not a country.
-5. Suggested next step. Include chart and PDF paths when produced.
+4. Data used: the exact window (e.g. 2023-09…2026-08) and the articles measured per language
+   (the "Articles measured" line), marking proxies as proxies.
+5. Limitations that matter here: languages without an article, interest is not willingness to
+   pay, a language is not a country.
+6. Suggested next step. Include chart and PDF paths when produced.
 
 ## Other commands
 

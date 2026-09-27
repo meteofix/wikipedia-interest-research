@@ -20,6 +20,15 @@ def analysis_summary(r: dict) -> str:
                      f"({p['prior'][0]}…{p['prior'][1]}). \"Relative\" = change of the topic's share of all views "
                      "in that language edition (main metric); \"absolute\" = raw views; \"edition\" = all views of the edition.")
     lines.append("Share = views per million views of the whole edition (comparable across languages).")
+    used = []
+    for s in r["series"]:
+        if s["articles"]:
+            arts = ", ".join(f"{a['title']}" + (f" (+{a['redirects_included']} redirects)" if a["redirects_included"] else "")
+                             for a in s["articles"][:4])
+            used.append(f"{s['lang']}: {arts}")
+    if used:
+        shown = "; ".join(used[:12]) + (f"; … {len(used) - 12} more" if len(used) > 12 else "")
+        lines.append(f"Articles measured (tell the user): {shown}.")
     lines.append("")
     lines.append("| Topic | Lang | Views/day (12m) | Share per M | Relative growth [95% range] | Absolute growth | Edition growth | Direction | Confidence |")
     lines.append("|---|---|---|---|---|---|---|---|---|")

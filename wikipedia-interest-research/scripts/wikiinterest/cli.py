@@ -174,6 +174,7 @@ def cmd_views(args) -> int:
     cache, http, index = _context()
     warnings = analysis.Warnings()
     months_list = analysis.resolve_window(args.months, args.start, args.end, warnings)
+    warnings.text = [w for w in warnings.text if "year-over-year" not in w]  # views reports levels anyway
     first_day, last_day = PV.clamp(*M.month_bounds(months_list[0], months_list[-1]))
     col = analysis.collect(args.topics, split_langs(args.langs), first_day, last_day, redirects=not args.no_redirects,
                            access=args.access, agent=args.agent, http=http, cache=cache, index=index, warnings=warnings)

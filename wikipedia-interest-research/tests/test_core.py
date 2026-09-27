@@ -237,3 +237,29 @@ def test_number_grounding():
     assert ungrounded_numbers("росте на +12% [3%, 22,5%], 1 234 переглядів у 2025", [res]) == []
     assert ungrounded_numbers("росте на 57%", [res]) == ["57%"]
     assert fmt_pct(-0.045) == "-4.5%" and fmt_pct(0.1234) == "+12%"
+
+
+# ---------- topic disambiguation ---------------------------------------------------------------------------
+
+def _c(qid, label, desc, n):
+    return {"qid": qid, "label": label, "description": desc, "wikipedias": n}
+
+
+def test_pick_best_prefers_widely_covered_exact_label_and_flags_rivals():
+    from wikiinterest.resolve import pick_best
+
+    # search order puts the car maker first; the animal is the main meaning of "jaguar"
+    cands = [_c("Q30055", "Jaguar Cars", "British car company", 68), _c("Q2732887", "Jaguar", "torpedo boat", 5),
+             _c("Q35694", "jaguar", "species of big cat", 128)]
+    best, rivals = pick_best("jaguar", cands)
+    assert best["qid"] == "Q35694" and [r["qid"] for r in rivals] == ["Q30055"]
+    # a second meaning outside the first three search hits still makes the query ambiguous
+    cands = [_c("Q308", "Mercury", "planet", 250), _c("Q613883", "Mercury", "car marque", 27),
+             _c("Q1231263", "Mercury", "commune in France", 35), _c("Q165745", "Mercury Records", "label", 40),
+             _c("Q925", "mercury", "chemical element", 176)]
+    best, rivals = pick_best("mercury", cands)
+    assert best["qid"] == "Q308" and "Q925" in [r["qid"] for r in rivals]
+    # an unambiguous topic stays unambiguous
+    cands = [_c("Q718", "chess", "board game", 202), _c("Q843284", "Chess", "musical", 19)]
+    best, rivals = pick_best("chess", cands)
+    assert best["qid"] == "Q718" and rivals == []
