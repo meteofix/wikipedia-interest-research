@@ -72,7 +72,8 @@ def analysis_summary(r: dict) -> str:
                             "recompute or reinterpret the numbers): " + " ".join(
                     f"{_MONTHS[i][:3]} {v - 100:+d}%" for i, v in enumerate(prof)))
             if m.get("peak_month"):
-                bits.append(f"seasonal peak in {_MONTHS[m['peak_month'] - 1]} (profile amplitude "
+                peak_pct = f", {prof[m['peak_month'] - 1] - 100:+d}% vs average" if prof else ""
+                bits.append(f"seasonal peak in {_MONTHS[m['peak_month'] - 1]}{peak_pct} (profile amplitude "
                             f"{fmt_pct(m['seasonality_amplitude'], signed=False)})")
             if m.get("spike_share", 0) >= 0.05 and m.get("top_spikes"):
                 sp = m["top_spikes"][0]
