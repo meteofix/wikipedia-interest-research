@@ -79,7 +79,13 @@ def verdict(metrics: dict, variants: dict, yoy_prior_start: str) -> tuple[dict, 
     if start and start > yoy_prior_start:
         caps.append(0)
         add("late_start", start=start)
-    margin = ci[0] if base_dir == "growing" else -ci[1] if (ci and base_dir == "declining") else 0.0
+    if ci is None:
+        # no range: most resampled months of the earlier year had no views (new or tiny article)
+        caps.append(0)
+        add("no_range")
+        margin = 0.0
+    else:
+        margin = ci[0] if base_dir == "growing" else (-ci[1] if base_dir == "declining" else 0.0)
     if ci and margin < SAFE_MARGIN:
         width = ci[1] - ci[0]
         if width > VERY_WIDE_CI:

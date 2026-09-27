@@ -1,6 +1,6 @@
 ---
 name: wikipedia-interest-research
-description: Measures public interest in topics across Wikipedia language editions using Wikimedia pageview data — growth with confidence ratings, comparisons of languages/markets or topics, seasonality, topic discovery, charts and a one-page PDF report. Use when someone (often a founder or product manager) asks whether interest in a topic, course, skill, product category or hobby is growing, which languages, markets or topics look most promising, when interest peaks, how reliable such a signal is, or wants a shareable report based on Wikipedia views, or asks how such numbers are computed (bots, mobile, renamed articles). Also use it for market questions the data can only partly answer (willingness to pay, pricing, market size, forecasts) — it explains what Wikipedia interest can and cannot show and offers the closest measurable analysis.
+description: Measures public interest in topics across Wikipedia language editions using Wikimedia pageview data — growth with confidence ratings, comparisons of languages/markets or topics, seasonality, topic discovery, charts and a one-page PDF report. Use when someone (often a founder or product manager) asks whether interest in a topic, course, skill, product category or hobby is growing, which languages, markets or topics look most promising, when interest peaks, what is popular or trending in a language edition, how reliable such a signal is, or wants a shareable report based on Wikipedia views, or asks how such numbers are computed (bots, mobile, renamed articles). Also use it for market questions the data can only partly answer (willingness to pay, pricing, market size, forecasts) — it explains what Wikipedia interest can and cannot show and offers the closest measurable analysis.
 compatibility: Requires Python 3.10+ with uv (or pip) and internet access to wikimedia.org and wikidata.org. Optional env WIKI_CONTACT (email or URL) identifies you to the Wikimedia API.
 metadata:
   version: "0.1.0"
@@ -21,6 +21,8 @@ language editions, run the commands, and explain the results honestly.
   analyze data. Every number you give the user must be copied from command output — never read
   numbers off charts (run `views` for monthly figures) and never derive new ones (ratios like
   "2.5× more", differences, sums).
+- Don't write or run your own code (Python, matplotlib, curl, spreadsheets) — not even for
+  charts: use the PNGs from `analyze`, or `views ... --chart` for custom periods.
 - Run commands from this skill's directory: `uv run scripts/wiki.py <command>` (the first run
   installs dependencies in ~10 s). No uv? `pip install numpy matplotlib fpdf2` and use `python3`.
 - Answer in the user's language.
@@ -109,7 +111,8 @@ language editions, run the commands, and explain the results honestly.
   (`--granularity daily|yearly`) series for custom questions such as platform split or exact
   months; `--exclude-months 1` drops months before summing; `--days 30` gives the last 30 days
   including the current, unfinished month.
-- `top --lang cs [--month 2026-08] [--match word]` — most viewed articles, for "what is popular".
+- `top --lang cs [--month 2026-08] [--match word]` — most viewed articles, for "what is popular"
+  (monthly lists; the data has no hourly or real-time view).
 - `uv run scripts/wiki.py --help` lists every flag.
 - Methodology questions ("how is confidence computed?"): read
   [references/methodology.md](references/methodology.md).

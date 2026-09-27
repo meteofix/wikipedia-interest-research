@@ -34,6 +34,7 @@ TEMPLATES: dict[str, dict[str, str]] = {
         "consistent": "consistent: solid volume ({views} views/day), not driven by spikes{variants}",
         "consistent_variants": ", holds in all {n} robustness checks",
         "no_yoy": "no year-over-year comparison possible: no views in the earlier 12 months",
+        "no_range": "no reliable uncertainty range: the earlier 12 months have too few views (new or tiny article)",
         # comparison notes
         "overlap": "the leader's and runner-up's uncertainty ranges overlap: the difference is not certain",
         "low_conf_series": "series with Low confidence should not drive the decision: {labels}",
@@ -76,6 +77,7 @@ TEMPLATES: dict[str, dict[str, str]] = {
         "consistent": "висновок стійкий: достатній обсяг ({views} переглядів/день), не залежить від сплесків{variants}",
         "consistent_variants": ", тримається в усіх {n} перевірках стійкості",
         "no_yoy": "порівняння рік до року неможливе: у попередні 12 місяців переглядів не було",
+        "no_range": "немає надійного діапазону: у попередні 12 місяців замало переглядів (нова або дуже мала стаття)",
         "overlap": "діапазони лідера й другого місця перетинаються: різниця не гарантована",
         "low_conf_series": "ряди з низькою довірою не мають визначати рішення: {labels}",
         "interest_not_intent": "Перегляди Вікіпедії показують інформаційний інтерес, а не намір купити чи готовність "

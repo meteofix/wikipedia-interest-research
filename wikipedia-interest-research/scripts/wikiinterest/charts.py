@@ -426,3 +426,23 @@ def render_charts(results: dict, out_dir: Path, lang: str = "en") -> dict:
     trend = render_trend(results, out_dir / f"trend{suffix}.png", lang=lang)
     growth = render_growth(results, out_dir / f"growth{suffix}.png", lang=lang)
     return {"trend_png": str(trend.resolve()), "growth_png": str(growth.resolve())}
+
+
+def render_views_chart(periods: list[str], series: dict[str, list[float]], title: str, path) -> str:
+    """Simple line chart for `views --chart` (custom periods, platforms, daily data)."""
+    import matplotlib.pyplot as plt
+
+    fig, ax = plt.subplots(figsize=(8, 3.6), dpi=150)
+    for name, values in list(series.items())[:8]:
+        ax.plot(range(len(periods)), values, label=sanitize(name)[0], linewidth=1.4)
+    step = max(1, len(periods) // 10)
+    ax.set_xticks(range(0, len(periods), step))
+    ax.set_xticklabels([str(p)[:10] for p in periods[::step]], rotation=30, ha="right", fontsize=7)
+    ax.set_title(sanitize(title)[0], fontsize=9)
+    ax.grid(alpha=0.25)
+    ax.legend(fontsize=7, frameon=False)
+    fig.text(0.01, 0.01, "Source: Wikimedia pageviews API", fontsize=6, color="#666")
+    fig.tight_layout()
+    fig.savefig(path)
+    plt.close(fig)
+    return str(path)

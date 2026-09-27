@@ -85,6 +85,7 @@ def build_parser() -> argparse.ArgumentParser:
                    help="all-access (default), desktop, mobile-web, mobile-app, or mobile (= web + app)")
     v.add_argument("--agent", default="user", choices=["user", "all-agents", "automated", "spider"])
     v.add_argument("--totals", action="store_true", help="add the whole edition's views and the topic share")
+    v.add_argument("--chart", action="store_true", help="also save a line chart (PNG) of the printed series")
     v.add_argument("--no-redirects", action="store_true")
     v.add_argument("--out", help="CSV path (default: in $WIKI_INTEREST_OUT)")
 
@@ -276,6 +277,14 @@ def cmd_views(args) -> int:
         note += f"; months excluded: {', '.join(str(m) for m in sorted(excl))}"
     if warnings.text:
         note += "\n" + "\n".join(f"- {w}" for w in warnings.text)
+    if args.chart and rows:
+        from . import charts
+
+        plot_cols = [c for c in cols if not c.startswith(("edition ·", "share/M"))] or cols
+        png = out.with_suffix(".png")
+        charts.render_views_chart([r["period"] for r in rows], {c: [r.get(c, 0) for r in rows] for c in plot_cols},
+                                  note.splitlines()[0].lstrip("# "), png)
+        note += f"\nChart: {png.resolve()}"
     print(render.views_table(rows, cols, str(out.resolve()), note))
     return EXIT_OK if columns else EXIT_NOT_FOUND
 

@@ -300,3 +300,9 @@ def test_excluding_a_month_removes_its_effect_from_growth():
     with_jan = M.series_metrics(days, topic, topic, total, ms)["metrics"]["yoy_rel"]
     without_jan = M.series_metrics(days, topic, topic, total, ms, {1})["metrics"]["yoy_rel"]
     assert with_jan > 0.3 and abs(without_jan - 0.1) < 0.05
+
+
+def test_missing_bootstrap_range_does_not_crash_and_lowers_confidence():
+    v, _ = verdict(_metrics(yoy_rel=12.79, yoy_rel_ci=None), {}, "2024-09-01")
+    assert v["direction"] == "growing" and v["confidence"] == "Low"
+    assert any(c["code"] == "no_range" for c in v["reason_codes"])
