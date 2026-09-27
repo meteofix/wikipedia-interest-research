@@ -15,6 +15,9 @@ def analysis_summary(r: dict) -> str:
     lines = [f"## Wikipedia interest: {topics} — {langs}", ""]
     red = "redirects included" if p["redirects"] else "redirects excluded"
     lines.append(f"Window: {p['start']} … {p['end']} ({p['months']} months; {p['agent']} views, {p['access']}, {red}).")
+    if p.get("exclude_months"):
+        lines.append("Excluded from growth and levels in every year: "
+                     + ", ".join(_MONTHS[m - 1] for m in p["exclude_months"]) + ".")
     if p.get("prior"):
         lines.append(f"Growth = last 12 months ({p['recent'][0]}…{p['recent'][1]}) vs previous 12 "
                      f"({p['prior'][0]}…{p['prior'][1]}). \"Relative\" = change of the topic's share of all views "

@@ -103,10 +103,12 @@ language editions, run the commands, and explain the results honestly.
 ## Other commands
 
 - Follow-ups ("add Slovak", "only last 2 years", "without redirects", new thresholds): rerun
-  `analyze` with changed flags. Cached data is reused, so it takes seconds.
+  `analyze` with changed flags. Cached data is reused, so it takes seconds. "Mobile only" →
+  `--access mobile`; "leave out January" → `--exclude-months 1`.
 - `views <topic> --langs de --access desktop|mobile-web|mobile-app --totals` — raw monthly or daily
-  (`--granularity daily`) series for custom questions such as platform split or exact months;
-  `--days 30` gives the last 30 days including the current, unfinished month.
+  (`--granularity daily|yearly`) series for custom questions such as platform split or exact
+  months; `--exclude-months 1` drops months before summing; `--days 30` gives the last 30 days
+  including the current, unfinished month.
 - `top --lang cs [--month 2026-08] [--match word]` — most viewed articles, for "what is popular".
 - `uv run scripts/wiki.py --help` lists every flag.
 - Methodology questions ("how is confidence computed?"): read

@@ -295,8 +295,8 @@ def build_series(t: Topic, site: Site, col: dict) -> tuple[np.ndarray, np.ndarra
 def run(specs: list[str], lang_tokens: list[str], *, months: int | None = 36, start: str | None = None,
         end: str | None = None, redirects: bool = True, access: str = "all-access", agent: str = "user",
         rank_by: str = "growth", min_views: float | None = None, min_growth: float | None = None,
-        weights: dict[str, float] | None = None, out: str | None = None, command: str | None = None,
-        cache: Cache | None = None) -> dict:
+        weights: dict[str, float] | None = None, exclude_months: list[int] | None = None,
+        out: str | None = None, command: str | None = None, cache: Cache | None = None) -> dict:
     cache, http, index = _context(cache)
     warnings = Warnings()
     months_list = resolve_window(months, start, end, warnings)
@@ -331,7 +331,7 @@ def run(specs: list[str], lang_tokens: list[str], *, months: int | None = 36, st
                              label=t.label)
                 all_series.append(base)
                 continue
-            res = M.series_metrics(days, topic_v, main, total, months_list)
+            res = M.series_metrics(days, topic_v, main, total, months_list, set(exclude_months or ()))
             v, rows = verdict(res["metrics"], res["variants"], yoy_prior_start)
             base.update(status="ok", monthly=res["monthly"], metrics=res["metrics"], variants=rows, verdict=v)
             crit = {}
@@ -361,7 +361,8 @@ def run(specs: list[str], lang_tokens: list[str], *, months: int | None = 36, st
             "recent": [months_list[-12], months_list[-1]] if len(months_list) >= 12 else None,
             "prior": [months_list[-24], months_list[-13]] if len(months_list) >= 24 else None,
             "agent": agent, "access": access, "redirects": redirects, "rank_by": rank_by,
-            "min_views": min_views, "min_growth": min_growth, "weights": weights, "command": command,
+            "min_views": min_views, "min_growth": min_growth, "weights": weights,
+            "exclude_months": sorted(set(exclude_months or ())), "command": command,
         },
         "series": all_series,
         "comparison": comparison,

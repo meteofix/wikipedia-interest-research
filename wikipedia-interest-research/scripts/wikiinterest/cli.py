@@ -60,12 +60,14 @@ def build_parser() -> argparse.ArgumentParser:
     a.add_argument("--start", type=_month, help="first month YYYY-MM (overrides --months)")
     a.add_argument("--end", type=_month, help="last month YYYY-MM (default: last complete month)")
     a.add_argument("--no-redirects", action="store_true", help="count only the articles, not their redirects")
-    a.add_argument("--access", default="all-access", choices=["all-access", "desktop", "mobile-web", "mobile-app"])
+    a.add_argument("--access", default="all-access", choices=["all-access", "desktop", "mobile-web", "mobile-app", "mobile"],
+                   help="all-access (default), desktop, mobile-web, mobile-app, or mobile (= web + app)")
     a.add_argument("--agent", default="user", choices=["user", "all-agents", "automated", "spider"])
     a.add_argument("--rank-by", default="growth", choices=["growth", "share", "views"],
                    help="order for comparisons (default growth)")
     a.add_argument("--min-views", type=float, help="user criterion: minimum average views/day")
     a.add_argument("--min-growth", type=float, help="user criterion: minimum relative growth in percent, e.g. 15")
+    a.add_argument("--exclude-months", help="calendar months to leave out of growth/levels, e.g. 1 or 12,1")
     a.add_argument("--weights", help="user's weighted ranking, e.g. growth=2,share=1 (criteria: growth, share, views, "
                                      "confidence)")
     a.add_argument("--out", help="output directory (default $WIKI_INTEREST_OUT/<timestamp>-<slug>)")
@@ -76,9 +78,11 @@ def build_parser() -> argparse.ArgumentParser:
     v.add_argument("--start", type=_month, help="first month YYYY-MM")
     v.add_argument("--end", type=_month, help="last month YYYY-MM (default: last complete month)")
     v.add_argument("--months", type=int, default=24, help="window length if --start is not given (default 24)")
-    v.add_argument("--granularity", default="monthly", choices=["monthly", "daily"])
+    v.add_argument("--granularity", default="monthly", choices=["monthly", "daily", "yearly"])
+    v.add_argument("--exclude-months", help="calendar months to drop before summing, e.g. 1 or 12,1")
     v.add_argument("--days", type=int, help="daily views for the last N days up to yesterday (includes the current month)")
-    v.add_argument("--access", default="all-access", choices=["all-access", "desktop", "mobile-web", "mobile-app"])
+    v.add_argument("--access", default="all-access", choices=["all-access", "desktop", "mobile-web", "mobile-app", "mobile"],
+                   help="all-access (default), desktop, mobile-web, mobile-app, or mobile (= web + app)")
     v.add_argument("--agent", default="user", choices=["user", "all-agents", "automated", "spider"])
     v.add_argument("--totals", action="store_true", help="add the whole edition's views and the topic share")
     v.add_argument("--no-redirects", action="store_true")
@@ -89,7 +93,8 @@ def build_parser() -> argparse.ArgumentParser:
     t.add_argument("--month", type=_month, help="YYYY-MM (default: last complete month)")
     t.add_argument("--limit", type=int, default=25)
     t.add_argument("--match", help="keep titles containing this text (case-insensitive)")
-    t.add_argument("--access", default="all-access", choices=["all-access", "desktop", "mobile-web", "mobile-app"])
+    t.add_argument("--access", default="all-access", choices=["all-access", "desktop", "mobile-web", "mobile-app", "mobile"],
+                   help="all-access (default), desktop, mobile-web, mobile-app, or mobile (= web + app)")
 
     r = sub.add_parser("report", help="one-page PDF from an analysis directory + your notes.md")
     r.add_argument("dir", nargs="?", help="analysis directory printed by analyze")
@@ -170,14 +175,26 @@ def cmd_analyze(args) -> int:
                 raise ValueError(f"--weights: '{part}' must look like growth=2") from None
     res = analysis.run(args.topics, split_langs(args.langs), months=args.months, start=args.start, end=args.end,
                        redirects=not args.no_redirects, access=args.access, agent=args.agent, rank_by=args.rank_by,
-                       min_views=args.min_views, min_growth=args.min_growth, weights=weights, out=args.out,
-                       command=command)
+                       min_views=args.min_views, min_growth=args.min_growth, weights=weights,
+                       exclude_months=_months_arg(args.exclude_months), out=args.out, command=command)
     print(Path(res["files"]["summary"]).read_text(encoding="utf-8"))
     st = res["_stats"]
     print(f"[wiki] {st['api_requests']} API requests; cache: hits={st['series_cached']} "
           f"fetched={st['series_fetched']} (daily series)", file=sys.stderr)
     ok = any(s["status"] == "ok" for s in res["series"])
     return EXIT_OK if ok else EXIT_NOT_FOUND
+
+
+def _months_arg(value: str | None) -> list[int]:
+    if not value:
+        return []
+    try:
+        months = [int(x) for x in value.replace(" ", "").split(",") if x]
+    except ValueError:
+        raise ValueError("--exclude-months takes month numbers, e.g. 1 or 12,1") from None
+    if any(m < 1 or m > 12 for m in months):
+        raise ValueError("--exclude-months: months must be 1..12")
+    return months
 
 
 def cmd_views(args) -> int:
@@ -214,12 +231,26 @@ def cmd_views(args) -> int:
                 tot = np.array([col["series_data"][(s.code, PV.TOTAL)][d] for d in days], dtype=float)
                 series[f"edition · {s.code}"] = tot
                 columns.append(f"edition · {s.code}")
+    excl = set(_months_arg(args.exclude_months))
+    if excl:
+        keep = np.array([int(d[5:7]) not in excl for d in days], dtype=float)
+        series = {c: v * keep for c, v in series.items()}
     if args.granularity == "monthly":
-        periods = months_list
-        agg = {c: M.monthly_sums(days, v, months_list) for c, v in series.items()}
+        periods = [m for m in months_list if int(m[5:7]) not in excl]
+        idx = [months_list.index(m) for m in periods]
+        agg = {c: M.monthly_sums(days, v, months_list)[idx] for c, v in series.items()}
+    elif args.granularity == "yearly":
+        years = sorted({d[:4] for d in days})
+        periods = []
+        for y in years:
+            in_year = [m for m in months_list if m.startswith(y) and int(m[5:7]) not in excl]
+            full = len([m for m in months_list if m.startswith(y)]) == 12
+            periods.append(y if full else f"{y} (partial: {in_year[0][5:]}–{in_year[-1][5:]})" if in_year else y)
+        agg = {c: np.array([sum(v[i] for i, d in enumerate(days) if d[:4] == y) for y in years]) for c, v in series.items()}
     else:
-        periods = days
-        agg = series
+        periods = [d for d in days if int(d[5:7]) not in excl]
+        idx = [i for i, d in enumerate(days) if int(d[5:7]) not in excl]
+        agg = {c: v[idx] for c, v in series.items()}
     rows = []
     for i, per in enumerate(periods):
         row = {"period": per}
@@ -241,6 +272,8 @@ def cmd_views(args) -> int:
         w.writerows(rows)
     note = (f"## Views ({args.agent}, {args.access}, {'no redirects' if args.no_redirects else 'redirects included'}), "
             f"{periods[0]} … {periods[-1]}, {args.granularity}")
+    if excl:
+        note += f"; months excluded: {', '.join(str(m) for m in sorted(excl))}"
     if warnings.text:
         note += "\n" + "\n".join(f"- {w}" for w in warnings.text)
     print(render.views_table(rows, cols, str(out.resolve()), note))

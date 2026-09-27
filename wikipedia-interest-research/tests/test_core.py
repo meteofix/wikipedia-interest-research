@@ -290,3 +290,13 @@ def test_large_clear_growth_is_not_penalised_for_width_or_small_spike_share():
     m = _metrics(yoy_rel=0.35, yoy_rel_ci=[0.02, 0.80], yoy_rel_ex_spikes=0.33)
     v, _ = verdict(m, {}, "2024-09-01")
     assert v["confidence"] == "Medium"
+
+
+def test_excluding_a_month_removes_its_effect_from_growth():
+    days, topic, total, ms = synth(0.1, seasonal=0.0, noise=0.05, seed=11)
+    topic = topic.copy()
+    jan_recent = [i for i, d in enumerate(days) if d[:7] == ms[-12:][[m[5:] for m in ms[-12:]].index("01")]]
+    topic[jan_recent] *= 4  # a one-off January boom in the latest year
+    with_jan = M.series_metrics(days, topic, topic, total, ms)["metrics"]["yoy_rel"]
+    without_jan = M.series_metrics(days, topic, topic, total, ms, {1})["metrics"]["yoy_rel"]
+    assert with_jan > 0.3 and abs(without_jan - 0.1) < 0.05

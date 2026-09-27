@@ -168,9 +168,14 @@ def window_growth(views_m: np.ndarray, den_m: np.ndarray, offset: int = 0) -> tu
 
 
 def series_metrics(days: list[str], topic: np.ndarray, main: np.ndarray, total: np.ndarray,
-                   months: list[str]) -> dict:
-    """All metrics for one topic x language series. Arrays are daily and aligned with `days`."""
+                   months: list[str], exclude_months: set[int] | None = None) -> dict:
+    """All metrics for one topic x language series. Arrays are daily and aligned with `days`.
+
+    `exclude_months` (calendar months 1..12) are left out of growth and level metrics in every
+    year, e.g. to remove a January effect; seasonality and the monthly table still show them.
+    """
     n = len(months)
+    excl = set(exclude_months or ())
     spikes, base = detect_spikes(topic)
     excess = np.where(spikes, topic - base, 0.0)
     topic_ex = np.where(spikes, base, topic)
@@ -184,15 +189,17 @@ def series_metrics(days: list[str], topic: np.ndarray, main: np.ndarray, total: 
         share_m = np.where(tot_m > 0, v_m / tot_m * 1e6, 0.0)
         share_ex_m = np.where(tot_m > 0, ex_m / tot_m * 1e6, 0.0)
 
-    recent_days = sum(1 for d in days if d[:7] in set(months[-12:]))
-    yoy_rel, yoy_rel_ci = window_growth(v_m, tot_m)
-    ones = np.ones_like(v_m)
-    yoy_raw, yoy_raw_ci = window_growth(v_m, ones)
-    project_yoy = growth(tot_m[-12:], tot_m[-24:-12]) if n >= 24 else None
-    prior_yoy_rel, _ = window_growth(v_m, tot_m, offset=12) if n >= 36 else (None, None)
-    yoy_ex, yoy_ex_ci = window_growth(ex_m, tot_m)
-    yoy_shift, yoy_shift_ci = window_growth(v_m, tot_m, offset=6) if n >= 30 else (None, None)
-    yoy_main, yoy_main_ci = window_growth(main_m, tot_m)
+    keep = np.array([int(m[5:7]) not in excl for m in months], dtype=float)
+    v_k, tot_k, ex_k, main_k = v_m * keep, tot_m * keep, ex_m * keep, main_m * keep
+    recent = set(months[-12:])
+    recent_days = sum(1 for d in days if d[:7] in recent and int(d[5:7]) not in excl)
+    yoy_rel, yoy_rel_ci = window_growth(v_k, tot_k)
+    yoy_raw, yoy_raw_ci = window_growth(v_k, keep)
+    project_yoy = growth(tot_k[-12:], tot_k[-24:-12]) if n >= 24 else None
+    prior_yoy_rel, _ = window_growth(v_k, tot_k, offset=12) if n >= 36 else (None, None)
+    yoy_ex, yoy_ex_ci = window_growth(ex_k, tot_k)
+    yoy_shift, yoy_shift_ci = window_growth(v_k, tot_k, offset=6) if n >= 30 else (None, None)
+    yoy_main, yoy_main_ci = window_growth(main_k, tot_k)
 
     window24 = set(months[-24:])
     in24 = np.array([d[:7] in window24 for d in days])
@@ -205,13 +212,13 @@ def series_metrics(days: list[str], topic: np.ndarray, main: np.ndarray, total: 
     total_views = topic.sum()
 
     metrics = {
-        "avg_daily_views_12m": float(v_m[-12:].sum() / max(recent_days, 1)),
-        "share_ppm_12m": float(v_m[-12:].sum() / tot_m[-12:].sum() * 1e6) if tot_m[-12:].sum() > 0 else 0.0,
+        "avg_daily_views_12m": float(v_k[-12:].sum() / max(recent_days, 1)),
+        "share_ppm_12m": float(v_k[-12:].sum() / tot_k[-12:].sum() * 1e6) if tot_k[-12:].sum() > 0 else 0.0,
+        "cagr_rel": cagr(v_k, tot_k, n),
         "yoy_rel": yoy_rel, "yoy_rel_ci": yoy_rel_ci,
         "yoy_raw": yoy_raw, "yoy_raw_ci": yoy_raw_ci,
         "project_yoy": project_yoy,
         "prior_yoy_rel": prior_yoy_rel,
-        "cagr_rel": cagr(v_m, tot_m, n),
         "yoy_rel_ex_spikes": yoy_ex,
         "yoy_rel_ex_spikes_ci": yoy_ex_ci,
         "spike_share": spike_share,

@@ -13,7 +13,7 @@ from .sites import Site
 API = "https://wikimedia.org/api/rest_v1/metrics/pageviews"
 TOTAL = "__TOTAL__"  # pseudo-title under which whole-edition totals are cached
 
-ACCESS = ("all-access", "desktop", "mobile-web", "mobile-app")
+ACCESS = ("all-access", "desktop", "mobile-web", "mobile-app", "mobile")  # "mobile" = web + app
 AGENTS = ("user", "all-agents", "automated", "spider")
 
 
@@ -58,6 +58,10 @@ def _fetch_total(http: Http, site: Site, access: str, agent: str, s: date, e: da
 def daily(http: Http, cache: Cache, site: Site, title: str, start: date, end: date,
           access: str = "all-access", agent: str = "user") -> dict[str, int]:
     """Zero-filled daily views for one article (or the edition total when title == TOTAL)."""
+    if access == "mobile":  # the API has no combined mobile access type
+        web = daily(http, cache, site, title, start, end, "mobile-web", agent)
+        app = daily(http, cache, site, title, start, end, "mobile-app", agent)
+        return {d: web.get(d, 0) + app.get(d, 0) for d in web}
     start, end = clamp(start, end)
     if end < start:
         return {}
