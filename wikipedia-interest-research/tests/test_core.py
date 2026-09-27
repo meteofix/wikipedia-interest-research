@@ -263,3 +263,30 @@ def test_pick_best_prefers_widely_covered_exact_label_and_flags_rivals():
     cands = [_c("Q718", "chess", "board game", 202), _c("Q843284", "Chess", "musical", 19)]
     best, rivals = pick_best("chess", cands)
     assert best["qid"] == "Q718" and rivals == []
+
+
+def test_weighted_scores_use_percentile_ranks():
+    from wikiinterest.analysis import weighted_scores
+
+    def s(key, g, share, conf):
+        return {"key": key, "topic_label": "t", "lang": key, "status": "ok",
+                "metrics": {"yoy_rel": g, "share_ppm_12m": share, "avg_daily_views_12m": share},
+                "verdict": {"confidence": conf}}
+    series = [s("a", 0.3, 10, "High"), s("b", 0.1, 50, "Medium"), s("c", -0.2, 30, "Low")]
+    w = weighted_scores(series, {"growth": 2, "share": 1})
+    assert [r["key"] for r in w["ranking"]] == ["a", "b", "c"]
+    assert w["ranking"][0]["score"] == round((2 * 1 + 1 * 0) / 3, 2)
+    w = weighted_scores(series, {"share": 1})
+    assert w["ranking"][0]["key"] == "b"
+
+
+def test_large_clear_growth_is_not_penalised_for_width_or_small_spike_share():
+    # amendment 3: [+105%, +220%] is wide but unambiguous; +153% vs +136% without spikes is not spike-driven
+    m = _metrics(yoy_rel=1.53, yoy_rel_ci=[1.05, 2.20], yoy_rel_ex_spikes=1.36, yoy_rel_ex_spikes_ci=[0.9, 2.0],
+                 spike_share=0.046)
+    v, _ = verdict(m, {}, "2024-09-01")
+    assert (v["direction"], v["confidence"]) == ("growing", "High")
+    # the same width close to zero still lowers confidence
+    m = _metrics(yoy_rel=0.35, yoy_rel_ci=[0.02, 0.80], yoy_rel_ex_spikes=0.33)
+    v, _ = verdict(m, {}, "2024-09-01")
+    assert v["confidence"] == "Medium"

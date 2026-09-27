@@ -135,15 +135,23 @@ def git_head() -> str | None:
 # ---------------------------------------------------------------- run one agent turn
 
 
-def install_skill(project: Path) -> None:
+def install_skill(project: Path, source: Path = SKILL_DIR) -> None:
     dest = project / ".claude" / "skills" / SKILL_NAME
     dest.mkdir(parents=True, exist_ok=True)
     for part in RUNTIME_PARTS:
-        src = SKILL_DIR / part
+        src = source / part
         if src.is_dir():
             shutil.copytree(src, dest / part, ignore=IGNORE, dirs_exist_ok=True)
         elif src.is_file():
             shutil.copy2(src, dest / part)
+
+
+def snapshot_skill(it_dir: Path) -> Path:
+    """Freeze the runtime skill once per iteration so edits made during a long run cannot mix versions."""
+    snap = it_dir / "skill-snapshot"
+    if not snap.exists():
+        install_skill(snap)
+    return snap / ".claude" / "skills" / SKILL_NAME
 
 
 def run_process(cmd: list[str], cwd: Path, env: dict, timeout: float) -> tuple[str, str, int | None, bool, float]:
@@ -295,7 +303,7 @@ def run_item(item: dict, k: int, ctx: dict) -> dict:
     project.mkdir(parents=True)
     outputs.mkdir()
     if ctx["config"] == "skill":
-        install_skill(project)
+        install_skill(project, ctx["skill_source"])
 
     env = dict(os.environ)
     if secret:
@@ -416,6 +424,7 @@ def main() -> None:
         "args": args, "secret": secret, "config": config, "config_dir": config_dir, "set_name": set_name,
         "cache_path": root / "cache.sqlite", "claude": claude,
         "snapshot": snapshot_hash() if config == "skill" else None, "git_head": git_head(),
+        "skill_source": snapshot_skill(it_dir) if config == "skill" else None,
     }
     meta_path = it_dir / "meta.json"
     meta = json.loads(meta_path.read_text()) if meta_path.exists() else {"iteration": args.iteration, "set": set_name, "runs": []}

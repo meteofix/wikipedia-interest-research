@@ -147,6 +147,21 @@ def recent_views(http: Http, site: Site, titles: list[str], days: int = 60) -> d
     return out
 
 
+def creation_date(http: Http, site: Site, title: str) -> str | None:
+    """Date of the first revision (page moves keep history, so this is the original creation)."""
+    data = http.get_json(
+        site.api,
+        {"action": "query", "titles": title, "prop": "revisions", "rvdir": "newer", "rvlimit": "1",
+         "rvprop": "timestamp", "format": "json", "formatversion": "2"},
+        ttl=config.TTL_SITEMATRIX,
+    )
+    for p in data.get("query", {}).get("pages", []):
+        revs = p.get("revisions") or []
+        if revs:
+            return revs[0]["timestamp"][:10]
+    return None
+
+
 def local_search(http: Http, site: Site, query: str, limit: int = 3) -> list[dict]:
     data = http.get_json(
         site.api,

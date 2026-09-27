@@ -23,8 +23,12 @@ def analysis_summary(r: dict) -> str:
     used = []
     for s in r["series"]:
         if s["articles"]:
-            arts = ", ".join(f"{a['title']}" + (f" (+{a['redirects_included']} redirects)" if a["redirects_included"] else "")
-                             for a in s["articles"][:4])
+            def art(a):
+                bits = [f"since {a['created'][:7]}"] if a.get("created") else []
+                if a["redirects_included"]:
+                    bits.append(f"+{a['redirects_included']} redirects")
+                return a["title"] + (f" ({', '.join(bits)})" if bits else "")
+            arts = ", ".join(art(a) for a in s["articles"][:4])
             used.append(f"{s['lang']}: {arts}")
     if used:
         shown = "; ".join(used[:12]) + (f"; … {len(used) - 12} more" if len(used) > 12 else "")
@@ -59,6 +63,10 @@ def analysis_summary(r: dict) -> str:
                 bits.append(f"year before: {fmt_pct(m['prior_yoy_rel'])}")
             if m.get("cagr_rel") is not None:
                 bits.append(f"average yearly change over the window: {fmt_pct(m['cagr_rel'])}")
+            prof = m.get("seasonal_profile")
+            if prof and len(ok) <= 6:
+                bits.append("seasonal profile, 100 = average month: " + " ".join(
+                    f"{_MONTHS[i][:3]} {v}" for i, v in enumerate(prof)))
             if m.get("peak_month"):
                 bits.append(f"seasonal peak in {_MONTHS[m['peak_month'] - 1]} (profile amplitude "
                             f"{fmt_pct(m['seasonality_amplitude'], signed=False)})")
@@ -86,6 +94,11 @@ def analysis_summary(r: dict) -> str:
             lines.append(f"Leader stays first in {c['leader_stable']} robustness checks.")
         for n in c["notes"]:
             lines.append(f"Note: {n}")
+        wt = c.get("weighted")
+        if wt:
+            ws = ", ".join(f"{k} {v:g}" for k, v in wt["weights"].items())
+            ranked_w = ", ".join(f"{i}) {e['label']} {e['score']:.2f}" for i, e in enumerate(wt["ranking"], 1))
+            lines.append(f"Score with the user's weights ({ws}; {wt['method']}): {ranked_w}")
     crit = [(s, s["criteria"]) for s in r["series"] if s.get("criteria")]
     if crit:
         lines += ["", "User criteria:"]
@@ -95,6 +108,7 @@ def analysis_summary(r: dict) -> str:
     if r["warnings"]:
         lines += ["", "Warnings:"] + [f"- {w}" for w in r["warnings"]]
     lines += ["", "Caveats (tell the user the ones that matter for the decision):"] + [f"- {c}" for c in r["caveats"]]
+    lines += ["", "Checklist for your answer (derived from this analysis):"] + [f"- {c}" for c in answer_checklist(r)]
     f = r.get("files", {})
     if f:
         lines += ["", f"Analysis directory (use this exact path): {f.get('dir')}"]
@@ -103,6 +117,47 @@ def analysis_summary(r: dict) -> str:
                   f"`uv run scripts/wiki.py report {f.get('dir')} --lang <en|uk> --notes - <<'EOF'` followed by the "
                   "notes (template: `uv run scripts/wiki.py report --template`) and `EOF`."]
     return "\n".join(lines) + "\n"
+
+
+def answer_checklist(r: dict) -> list[str]:
+    """What a complete answer must mention, derived from the shape of the results (not the question)."""
+    p, series = r["params"], r["series"]
+    ok = [s for s in series if s["status"] == "ok"]
+    langs = {s["lang"] for s in series}
+    out = []
+    if p.get("prior"):
+        out.append(f"the window ({p['start']}…{p['end']}) and how growth is measured: the topic's share of the whole "
+                   "edition, last 12 months vs the previous 12")
+    else:
+        out.append(f"the window ({p['start']}…{p['end']}); it is too short for year-over-year growth")
+    out.append("direction and confidence for each series with its main reason; copy numbers exactly, do not compute "
+               "ratios or differences yourself")
+    out.append("which articles were measured (names above); call them proxies if they stand in for an activity, "
+               "method or product the user asked about")
+    if len(langs) > 1:
+        out.append("levels across languages: compare 'Share per M', not views/day (editions differ in size); a "
+                   "language edition is not a country (readers of a language live in several countries)")
+    missing = [s for s in series if s["status"] != "ok"]
+    if missing:
+        out.append("not measurable: " + ", ".join(f"{s['topic_label']} · {s['lang']}" for s in missing[:6])
+                   + " (no article / no views) — say so, do not fill the gap with guesses")
+    red = [s for s in ok if s["metrics"].get("redirect_share", 0) >= 0.3]
+    if red:
+        out.append("views via redirects (former titles, other names) are included, so renames do not break the series: "
+                   + ", ".join(f"{s['topic_label']} · {s['lang']}" for s in red[:4]))
+    seas = [s for s in ok if s["metrics"].get("peak_month")]
+    if seas:
+        out.append("seasonality: " + ", ".join(f"{s['topic_label']} · {s['lang']} peaks in {_MONTHS[s['metrics']['peak_month'] - 1]}"
+                                             for s in seas[:4]) + " (year-over-year compares the same months)")
+    spiky = [s for s in ok if s["metrics"].get("spike_share", 0) >= 0.05 and s["metrics"].get("top_spikes")]
+    if spiky:
+        out.append("spikes show when interest jumped, not why; don't state causes as facts")
+    low = [s for s in ok if s["verdict"]["confidence"] == "Low"]
+    if low:
+        out.append("weak signal for " + ", ".join(f"{s['topic_label']} · {s['lang']}" for s in low[:6])
+                   + ": don't base a recommendation on it")
+    out.append("Wikipedia views = informational interest, not willingness to pay")
+    return out
 
 
 def find_summary(results: list[dict], sites: list) -> str:
@@ -115,6 +170,9 @@ def find_summary(results: list[dict], sites: list) -> str:
             continue
         b = res["best"]
         lines.append(f"Best match: {b['qid']} — {b['label']} — \"{b['description']}\" — in {b['wikipedias']} Wikipedias")
+        lines.append("Check the description: is this what the user means? If it is only related (a person behind a "
+                     "method, a company behind a product, a broader field), treat it as a labelled proxy or pick a "
+                     "better candidate.")
         others = [c for c in res["candidates"] if c is not b]
         if others:
             lines.append("Other candidates: " + "; ".join(

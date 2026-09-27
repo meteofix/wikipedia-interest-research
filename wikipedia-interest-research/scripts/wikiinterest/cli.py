@@ -6,7 +6,7 @@ import argparse
 import csv
 import shlex
 import sys
-from datetime import datetime
+from datetime import date, datetime, timedelta
 from pathlib import Path
 
 from . import config
@@ -66,6 +66,8 @@ def build_parser() -> argparse.ArgumentParser:
                    help="order for comparisons (default growth)")
     a.add_argument("--min-views", type=float, help="user criterion: minimum average views/day")
     a.add_argument("--min-growth", type=float, help="user criterion: minimum relative growth in percent, e.g. 15")
+    a.add_argument("--weights", help="user's weighted ranking, e.g. growth=2,share=1 (criteria: growth, share, views, "
+                                     "confidence)")
     a.add_argument("--out", help="output directory (default $WIKI_INTEREST_OUT/<timestamp>-<slug>)")
 
     v = sub.add_parser("views", help="raw series for custom questions (platforms, bots, daily data, totals)")
@@ -75,6 +77,7 @@ def build_parser() -> argparse.ArgumentParser:
     v.add_argument("--end", type=_month, help="last month YYYY-MM (default: last complete month)")
     v.add_argument("--months", type=int, default=24, help="window length if --start is not given (default 24)")
     v.add_argument("--granularity", default="monthly", choices=["monthly", "daily"])
+    v.add_argument("--days", type=int, help="daily views for the last N days up to yesterday (includes the current month)")
     v.add_argument("--access", default="all-access", choices=["all-access", "desktop", "mobile-web", "mobile-app"])
     v.add_argument("--agent", default="user", choices=["user", "all-agents", "automated", "spider"])
     v.add_argument("--totals", action="store_true", help="add the whole edition's views and the topic share")
@@ -154,9 +157,21 @@ def cmd_analyze(args) -> int:
     from .sites import split_langs
 
     command = "uv run scripts/wiki.py " + " ".join(shlex.quote(a) for a in sys.argv[1:]) if sys.argv[1:] else None
+    weights = None
+    if args.weights:
+        weights = {}
+        for part in args.weights.replace(" ", "").split(","):
+            key, _, val = part.partition("=")
+            if key not in ("growth", "share", "views", "confidence"):
+                raise ValueError(f"--weights: unknown criterion '{key}'; use growth, share, views, confidence")
+            try:
+                weights[key] = float(val or 1)
+            except ValueError:
+                raise ValueError(f"--weights: '{part}' must look like growth=2") from None
     res = analysis.run(args.topics, split_langs(args.langs), months=args.months, start=args.start, end=args.end,
                        redirects=not args.no_redirects, access=args.access, agent=args.agent, rank_by=args.rank_by,
-                       min_views=args.min_views, min_growth=args.min_growth, out=args.out, command=command)
+                       min_views=args.min_views, min_growth=args.min_growth, weights=weights, out=args.out,
+                       command=command)
     print(Path(res["files"]["summary"]).read_text(encoding="utf-8"))
     st = res["_stats"]
     print(f"[wiki] {st['api_requests']} API requests; cache: hits={st['series_cached']} "
@@ -173,9 +188,15 @@ def cmd_views(args) -> int:
 
     cache, http, index = _context()
     warnings = analysis.Warnings()
-    months_list = analysis.resolve_window(args.months, args.start, args.end, warnings)
-    warnings.text = [w for w in warnings.text if "year-over-year" not in w]  # views reports levels anyway
-    first_day, last_day = PV.clamp(*M.month_bounds(months_list[0], months_list[-1]))
+    if args.days:
+        last_day = date.today() - timedelta(days=1)
+        first_day = last_day - timedelta(days=max(args.days, 1) - 1)
+        args.granularity = "daily"
+        months_list = M.month_list(first_day.strftime("%Y-%m"), last_day.strftime("%Y-%m"))
+    else:
+        months_list = analysis.resolve_window(args.months, args.start, args.end, warnings)
+        warnings.text = [w for w in warnings.text if "year-over-year" not in w]  # views reports levels anyway
+        first_day, last_day = PV.clamp(*M.month_bounds(months_list[0], months_list[-1]))
     col = analysis.collect(args.topics, split_langs(args.langs), first_day, last_day, redirects=not args.no_redirects,
                            access=args.access, agent=args.agent, http=http, cache=cache, index=index, warnings=warnings)
     days = col["days"]

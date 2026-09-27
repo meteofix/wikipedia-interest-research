@@ -13,11 +13,14 @@ FLAT_MAX_RANGE = 0.15
 # Below 10 views/day a single external link or bot burst can move monthly totals by >10%;
 # 50 views/day is where monthly totals become stable enough for year-over-year comparison.
 LOW_VOLUME, MODERATE_VOLUME = 10.0, 50.0
-# Interval width (high - low) above which a growth estimate is too imprecise to act on.
+# Interval width (high - low) above which a growth estimate is too imprecise to act on — applied
+# only when the range comes within SAFE_MARGIN of zero; a range like [+105%, +220%] is wide but
+# leaves no doubt about the direction (amendment 3 in docs/SPEC.md).
 WIDE_CI, VERY_WIDE_CI = 0.5, 1.0
-# Growth "depends on spikes" when removing spike days moves it by more than 10 points
-# or when spikes carry more than 30% of the views.
-SPIKE_GAP, SPIKE_SHARE = 0.10, 0.30
+SAFE_MARGIN = 0.10
+# Growth "depends on spikes" when removing spike days changes the direction, moves growth by more
+# than max(10 points, 25% of the growth itself), or spikes carry more than 30% of the views.
+SPIKE_GAP, SPIKE_REL_GAP, SPIKE_SHARE = 0.10, 0.25, 0.30
 # Variants whose growth differs from the base only by rounding are not disagreements.
 REDIRECT_VARIANT_MIN_SHARE = 0.05
 
@@ -76,7 +79,8 @@ def verdict(metrics: dict, variants: dict, yoy_prior_start: str) -> tuple[dict, 
     if start and start > yoy_prior_start:
         caps.append(0)
         add("late_start", start=start)
-    if ci:
+    margin = ci[0] if base_dir == "growing" else -ci[1] if (ci and base_dir == "declining") else 0.0
+    if ci and margin < SAFE_MARGIN:
         width = ci[1] - ci[0]
         if width > VERY_WIDE_CI:
             caps.append(0)
@@ -86,7 +90,10 @@ def verdict(metrics: dict, variants: dict, yoy_prior_start: str) -> tuple[dict, 
             add("ci_wide", ci=fmt_ci(ci))
     g_ex = metrics.get("yoy_rel_ex_spikes")
     spike_share = metrics.get("spike_share", 0.0)
-    if (g_ex is not None and abs(g - g_ex) > SPIKE_GAP) or spike_share > SPIKE_SHARE:
+    ex_dir = direction(g_ex, metrics.get("yoy_rel_ex_spikes_ci")) if g_ex is not None else base_dir
+    spike_gap = abs(g - g_ex) if g_ex is not None else 0.0
+    if (ex_dir != base_dir and ex_dir != "n/a") or spike_gap > max(SPIKE_GAP, SPIKE_REL_GAP * abs(g)) \
+            or spike_share > SPIKE_SHARE:
         level -= 1
         add("spikes", g=fmt_pct(g), g_ex=fmt_pct(g_ex), share=fmt_pct(spike_share, signed=False))
     disagree = [r for r in rows if r["direction"] != base_dir]

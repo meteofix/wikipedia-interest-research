@@ -13,17 +13,14 @@ SKILL = Path(__file__).resolve().parents[1]
 TEXT = (SKILL / "SKILL.md").read_text(encoding="utf-8")
 
 
-def frontmatter() -> dict[str, str]:
+def frontmatter() -> dict:
+    import yaml
+
     m = re.match(r"^---\n(.*?)\n---\n", TEXT, re.S)
     assert m, "SKILL.md must start with YAML frontmatter"
-    fields, key = {}, None
-    for line in m.group(1).splitlines():
-        if re.match(r"^[a-z-]+:", line):
-            key, _, value = line.partition(":")
-            fields[key] = value.strip()
-        elif key and line.startswith(" "):
-            fields[key] += "\n" + line.strip()
-    return fields
+    data = yaml.safe_load(m.group(1))  # fails on invalid YAML, e.g. an unquoted ": " in the description
+    assert isinstance(data, dict)
+    return data
 
 
 def test_frontmatter_follows_spec():
@@ -33,6 +30,7 @@ def test_frontmatter_follows_spec():
     assert name == SKILL.name, "name must match the directory name"
     assert 0 < len(fm["description"]) <= 1024
     assert len(fm.get("compatibility", "")) <= 500
+    assert all(isinstance(v, str) for v in (fm.get("metadata") or {}).values())
     assert set(fm) <= {"name", "description", "license", "compatibility", "metadata", "allowed-tools"}
 
 

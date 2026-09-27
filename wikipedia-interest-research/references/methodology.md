@@ -3,12 +3,28 @@
 Read this when the user asks how numbers, confidence or rankings are produced.
 
 ## Contents
+- Plain-language FAQ
 - Data and filters
 - Metrics
 - Direction and confidence
 - Robustness checks
 - Comparisons and user criteria
 - What the numbers do not say
+
+## Plain-language FAQ
+
+- **How is "growth of interest" computed?** Views of the topic's articles are added up per month for
+  the last 12 full months and for the 12 months before. Each is divided by all views of that language
+  edition in the same months (the topic's share of attention), and the two shares are compared. The
+  95% range shows how consistent that change is from month to month.
+- **Are bots counted?** No: only views Wikimedia classifies as human ("user" agent). Known crawlers and
+  automated traffic are excluded, but some undetected bots can remain; they usually show up as short
+  spikes, which the analysis detects and tests by recomputing growth without spike days.
+- **Are mobile views counted?** Yes: desktop, mobile web and the mobile apps are all included by default
+  (`views --access desktop|mobile-web|mobile-app` shows them separately).
+- **What if an article is renamed?** The old title becomes a redirect and keeps its old views. The
+  analysis adds the views of redirects (up to 30 per article) to the article, so history is not lost;
+  when views of a series only start inside the window, it is flagged as a new or renamed article.
 
 ## Data and filters
 
@@ -45,9 +61,10 @@ Direction from relative growth and its 95% range:
 Confidence starts at High and is lowered by:
 - volume below 10 views/day → Low; 10–50 views/day → at most Medium (few views = noisy months)
 - views starting after the comparison period begins (new/renamed article) → Low
-- range wider than 50 points → at most Medium; wider than 100 points → Low
-- growth that depends on spikes (changes by > 10 points without spike days, or spikes carry > 30%
-  of views) → one level down
+- range wider than 50 points → at most Medium; wider than 100 points → Low — only when the range
+  comes within 10 points of zero (a range like [+105%, +220%] is wide but the direction is certain)
+- growth that depends on spikes (direction changes without spike days, growth moves by more than
+  max(10 points, 25% of itself), or spikes carry > 30% of views) → one level down
 - robustness checks that change the direction: one → one level down, two or more → Low
 - uncertain direction → Low
 
@@ -66,6 +83,9 @@ in all checks is robust; one that flips is reported with the reason.
 - For growth rankings: how many robustness checks keep the same leader, and whether the
   leader's and runner-up's ranges overlap (overlap = the difference is not certain).
 - `--min-views` / `--min-growth` mark each series pass/fail against the user's thresholds.
+- `--weights growth=2,share=1` ranks by the user's own weighting: each criterion becomes a percentile
+  rank among the compared series (0 = worst, 1 = best), and the score is their weighted average.
+  Criteria: growth (relative growth), share, views (views/day), confidence (High > Medium > Low).
 
 ## What the numbers do not say
 

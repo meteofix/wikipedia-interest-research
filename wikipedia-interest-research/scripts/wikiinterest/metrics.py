@@ -97,6 +97,20 @@ def growth_ci(recent: np.ndarray, prior: np.ndarray, recent_den: np.ndarray | No
     return [float(np.percentile(g, 2.5)), float(np.percentile(g, 97.5))]
 
 
+def seasonal_profile(share: np.ndarray, months: list[str]) -> list[int] | None:
+    """Average share per calendar month (Jan..Dec) as an index, 100 = average month."""
+    if len(months) < 24:
+        return None
+    prof, cnt = np.zeros(12), np.zeros(12)
+    for s_, m in zip(share, months):
+        prof[int(m[5:7]) - 1] += s_
+        cnt[int(m[5:7]) - 1] += 1
+    if (cnt == 0).any() or prof.sum() <= 0:
+        return None
+    prof /= cnt
+    return [int(round(x)) for x in prof / prof.mean() * 100]
+
+
 def seasonality(share: np.ndarray, months: list[str]) -> tuple[int | None, float | None]:
     """Peak calendar month (1..12) and amplitude of the average monthly share profile."""
     if len(months) < 24:
@@ -199,10 +213,12 @@ def series_metrics(days: list[str], topic: np.ndarray, main: np.ndarray, total: 
         "prior_yoy_rel": prior_yoy_rel,
         "cagr_rel": cagr(v_m, tot_m, n),
         "yoy_rel_ex_spikes": yoy_ex,
+        "yoy_rel_ex_spikes_ci": yoy_ex_ci,
         "spike_share": spike_share,
         "top_spikes": top_spikes,
         "peak_month": peak,
         "seasonality_amplitude": amp,
+        "seasonal_profile": seasonal_profile(share_ex_m, months),
         "redirect_share": float((total_views - main.sum()) / total_views) if total_views > 0 else 0.0,
         "data_start": days[nz[0]] if len(nz) else None,
     }

@@ -5,6 +5,7 @@ from __future__ import annotations
 import csv
 import json
 import re
+import sys
 import unicodedata
 from concurrent.futures import ThreadPoolExecutor
 from dataclasses import dataclass, field
@@ -239,6 +240,11 @@ def collect(specs: list[str], lang_tokens: list[str], first_day: date, last_day:
                 redirect_map[(site.code, title)] = lst
 
     site_by_code = {s.code: s for s in sites}
+    created: dict[tuple[str, str], str | None] = {}
+    main_titles = sorted({(code, a["title"]) for (tid, code), arts in plan.items() for a in arts})
+    with ThreadPoolExecutor(max_workers=config.MAX_CONCURRENCY) as ex:
+        for key, day in zip(main_titles, ex.map(lambda k: R.creation_date(http, site_by_code[k[0]], k[1]), main_titles)):
+            created[key] = day
     jobs: set[tuple[str, str]] = set()
     for (tid, code), arts in plan.items():
         for a in arts:
@@ -247,6 +253,11 @@ def collect(specs: list[str], lang_tokens: list[str], first_day: date, last_day:
                 jobs.add((code, r))
     jobs |= {(s.code, PV.TOTAL) for s in sites}
     series_data: dict[tuple[str, str], dict[str, int]] = {}
+    todo = [j for j in jobs if cache.covered((site_by_code[j[0]].host, j[1], access, agent)) == []]
+    if len(todo) > 20:
+        eta = len(todo) / max(config.MAX_RPS, 0.1)
+        print(f"[wiki] downloading {len(todo)} new series (about {eta:.0f} s); if interrupted, rerun the same "
+              "command — finished series are cached", file=sys.stderr, flush=True)
 
     def fetch(job):
         code, title = job
@@ -256,7 +267,7 @@ def collect(specs: list[str], lang_tokens: list[str], first_day: date, last_day:
         for job, data in ex.map(fetch, sorted(jobs)):
             series_data[job] = data
     return {"sites": sites, "topics": topics, "plan": plan, "redirect_map": redirect_map,
-            "redirect_totals": redirect_totals, "series_data": series_data,
+            "redirect_totals": redirect_totals, "series_data": series_data, "created": created,
             "days": PV.daterange(first_day, last_day)}
 
 
@@ -276,6 +287,7 @@ def build_series(t: Topic, site: Site, col: dict) -> tuple[np.ndarray, np.ndarra
         nz = np.nonzero(arr)[0]
         arts_out.append({"title": a["title"], "source": a["source"], "redirects_included": len(reds),
                          "redirects_total": col["redirect_totals"].get((site.code, a["title"]), 0),
+                         "created": col.get("created", {}).get((site.code, a["title"])),
                          "data_start": days[nz[0]] if len(nz) else None})
     return topic_v, main, arts_out
 
@@ -283,7 +295,8 @@ def build_series(t: Topic, site: Site, col: dict) -> tuple[np.ndarray, np.ndarra
 def run(specs: list[str], lang_tokens: list[str], *, months: int | None = 36, start: str | None = None,
         end: str | None = None, redirects: bool = True, access: str = "all-access", agent: str = "user",
         rank_by: str = "growth", min_views: float | None = None, min_growth: float | None = None,
-        out: str | None = None, command: str | None = None, cache: Cache | None = None) -> dict:
+        weights: dict[str, float] | None = None, out: str | None = None, command: str | None = None,
+        cache: Cache | None = None) -> dict:
     cache, http, index = _context(cache)
     warnings = Warnings()
     months_list = resolve_window(months, start, end, warnings)
@@ -331,6 +344,8 @@ def run(specs: list[str], lang_tokens: list[str], *, months: int | None = 36, st
             all_series.append(base)
 
     comparison = compare(all_series, rank_by)
+    if weights and comparison is not None:
+        comparison["weighted"] = weighted_scores(all_series, weights)
     if months_list[0] <= "2025-08" and months_list[-1] >= "2025-03":
         warnings.add(i18n.render("bot_reclass"), "bot_reclass")
     results = {
@@ -346,7 +361,7 @@ def run(specs: list[str], lang_tokens: list[str], *, months: int | None = 36, st
             "recent": [months_list[-12], months_list[-1]] if len(months_list) >= 12 else None,
             "prior": [months_list[-24], months_list[-13]] if len(months_list) >= 24 else None,
             "agent": agent, "access": access, "redirects": redirects, "rank_by": rank_by,
-            "min_views": min_views, "min_growth": min_growth, "command": command,
+            "min_views": min_views, "min_growth": min_growth, "weights": weights, "command": command,
         },
         "series": all_series,
         "comparison": comparison,
@@ -398,6 +413,37 @@ def compare(series: list[dict], rank_by: str) -> dict | None:
         note_codes.append({"code": "low_conf_series", "params": {"labels": ", ".join(low), "keys": keys}})
     return {"rank_by": rank_by, "ranking": ranking, "leader_stable": leader_stable,
             "leader_ci_overlap": overlap, "notes": notes, "note_codes": note_codes}
+
+
+WEIGHT_FIELDS = {"growth": "yoy_rel", "share": "share_ppm_12m", "views": "avg_daily_views_12m"}
+_CONF_VALUE = {"High": 2, "Medium": 1, "Low": 0}
+
+
+def weighted_scores(series: list[dict], weights: dict[str, float]) -> dict:
+    """User-weighted ranking. Each criterion is turned into a 0..1 percentile rank across the
+    compared series (so units don't matter), then averaged with the user's weights."""
+    ok = [s for s in series if s["status"] == "ok"]
+    n = len(ok)
+
+    def value(s: dict, crit: str) -> float:
+        if crit == "confidence":
+            return _CONF_VALUE.get(s["verdict"]["confidence"], 0)
+        v = s["metrics"].get(WEIGHT_FIELDS[crit])
+        return v if v is not None else float("-inf")
+
+    pct: dict[str, dict[str, float]] = {}
+    for crit in weights:
+        order = sorted(ok, key=lambda s: value(s, crit))
+        pct[crit] = {s["key"]: (i / (n - 1) if n > 1 else 1.0) for i, s in enumerate(order)}
+    total_w = sum(weights.values()) or 1.0
+    rows = []
+    for s in ok:
+        score = sum(w * pct[c][s["key"]] for c, w in weights.items()) / total_w
+        rows.append({"key": s["key"], "label": f"{s['topic_label']} · {s['lang']}", "score": round(score, 2),
+                     "components": {c: round(pct[c][s["key"]], 2) for c in weights}})
+    rows.sort(key=lambda r: -r["score"])
+    return {"weights": weights, "ranking": rows,
+            "method": "weighted average of percentile ranks (0 = worst, 1 = best among the compared series)"}
 
 
 def write_outputs(results: dict, out: str | None, topics: list[Topic], sites: list[Site]) -> None:

@@ -29,6 +29,19 @@ Read this when a command fails, when data looks odd, or when the user asks about
   is not measurable there directly, not that nobody is interested.
 - Sections of an article cannot be measured separately.
 
+## Comparing with other sources (e.g. Google Trends)
+
+Differences are expected and are not errors:
+- Google Trends measures searches (intent to find something), Wikipedia measures reading an
+  encyclopedia article (wanting background knowledge); the two audiences overlap only partly.
+- Google Trends is normalised to a 0–100 index per query and region; this skill reports shares of
+  a language edition's views and absolute views per day.
+- Regions vs languages: Google Trends works per country, Wikipedia per language edition.
+- Wikipedia traffic itself is shifting to search snippets and AI answers, which lowers absolute views
+  even when interest in the topic holds (hence relative growth).
+Recommend treating agreement between sources as stronger evidence and disagreement as a reason to
+validate with a direct test (survey, landing page, ads).
+
 ## Language editions and codes
 
 - Codes follow Wikipedia subdomains: `pl`, `uk`, `zh-yue` (Cantonese), `als` (Alemannic, ISO `gsw`),
