@@ -1,0 +1,6 @@
+# Test-only dependencies: `uv run --with-requirements tests/requirements.txt pytest tests`
+pytest>=8
+pypdf>=4
+numpy>=1.26
+matplotlib>=3.8
+fpdf2>=2.7.8

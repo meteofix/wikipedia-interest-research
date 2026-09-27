@@ -1,0 +1,1932 @@
+{
+  "schema": "wiki-interest/analysis@1",
+  "created_at": "2026-09-27T12:00:00Z",
+  "tool_version": "0.1.0",
+  "params": {
+    "topics": [
+      {
+        "id": "t1",
+        "label": "Шахи",
+        "items": [
+          "Q718"
+        ]
+      },
+      {
+        "id": "t2",
+        "label": "Žonglování",
+        "items": [
+          "cs:Žonglování",
+          "pl:Żonglerka"
+        ]
+      }
+    ],
+    "langs": [
+      "uk",
+      "pl",
+      "cs"
+    ],
+    "start": "2023-09",
+    "end": "2026-08",
+    "months": 36,
+    "recent": [
+      "2025-09",
+      "2026-08"
+    ],
+    "prior": [
+      "2024-09",
+      "2025-08"
+    ],
+    "agent": "user",
+    "access": "all-access",
+    "redirects": true,
+    "rank_by": "growth",
+    "min_views": null,
+    "min_growth": null,
+    "command": "uv run scripts/wiki.py analyze \"Шахи=Q718\" \"Žonglování=cs:Žonglování+pl:Żonglerka\" --langs uk,pl,cs --months 36"
+  },
+  "series": [
+    {
+      "key": "t1|uk",
+      "topic_id": "t1",
+      "topic_label": "Шахи",
+      "lang": "uk",
+      "project": "uk.wikipedia.org",
+      "status": "ok",
+      "note": null,
+      "articles": [
+        {
+          "title": "Шахи",
+          "source": "Q718",
+          "redirects_included": 3,
+          "redirects_total": 3,
+          "data_start": "2015-07-01"
+        }
+      ],
+      "monthly": [
+        {
+          "month": "2023-09",
+          "views": 11223,
+          "views_main": 10325,
+          "project_views": 93673226,
+          "share_ppm": 119.8101,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-10",
+          "views": 13361,
+          "views_main": 12292,
+          "project_views": 92895027,
+          "share_ppm": 143.829,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-11",
+          "views": 14013,
+          "views_main": 12891,
+          "project_views": 93520194,
+          "share_ppm": 149.8393,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-12",
+          "views": 14595,
+          "views_main": 13427,
+          "project_views": 93569588,
+          "share_ppm": 155.9802,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-01",
+          "views": 14979,
+          "views_main": 13780,
+          "project_views": 92813681,
+          "share_ppm": 161.3878,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-02",
+          "views": 13892,
+          "views_main": 12780,
+          "project_views": 91066362,
+          "share_ppm": 152.5481,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-03",
+          "views": 14749,
+          "views_main": 13569,
+          "project_views": 93310117,
+          "share_ppm": 158.0643,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-04",
+          "views": 12719,
+          "views_main": 11701,
+          "project_views": 90617806,
+          "share_ppm": 140.3587,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-05",
+          "views": 12818,
+          "views_main": 11792,
+          "project_views": 92793492,
+          "share_ppm": 138.1347,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-06",
+          "views": 11529,
+          "views_main": 10606,
+          "project_views": 90317297,
+          "share_ppm": 127.65,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-07",
+          "views": 12219,
+          "views_main": 11241,
+          "project_views": 88589281,
+          "share_ppm": 137.9286,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-08",
+          "views": 12509,
+          "views_main": 11508,
+          "project_views": 89006244,
+          "share_ppm": 140.5407,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-09",
+          "views": 12074,
+          "views_main": 11108,
+          "project_views": 87934753,
+          "share_ppm": 137.3063,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-10",
+          "views": 14104,
+          "views_main": 12975,
+          "project_views": 89964124,
+          "share_ppm": 156.7736,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-11",
+          "views": 14761,
+          "views_main": 13580,
+          "project_views": 88672305,
+          "share_ppm": 166.4669,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-12",
+          "views": 17236,
+          "views_main": 15857,
+          "project_views": 87480461,
+          "share_ppm": 197.0269,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-01",
+          "views": 17545,
+          "views_main": 16141,
+          "project_views": 85947202,
+          "share_ppm": 204.137,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-02",
+          "views": 14736,
+          "views_main": 13557,
+          "project_views": 86003561,
+          "share_ppm": 171.3417,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-03",
+          "views": 16727,
+          "views_main": 15388,
+          "project_views": 86328801,
+          "share_ppm": 193.7592,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-04",
+          "views": 14325,
+          "views_main": 13179,
+          "project_views": 86429074,
+          "share_ppm": 165.7428,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-05",
+          "views": 13809,
+          "views_main": 12704,
+          "project_views": 85004963,
+          "share_ppm": 162.4493,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-06",
+          "views": 13010,
+          "views_main": 11969,
+          "project_views": 85929156,
+          "share_ppm": 151.4038,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-07",
+          "views": 12324,
+          "views_main": 11338,
+          "project_views": 85064617,
+          "share_ppm": 144.8781,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-08",
+          "views": 13233,
+          "views_main": 12174,
+          "project_views": 85642049,
+          "share_ppm": 154.5152,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-09",
+          "views": 14255,
+          "views_main": 13114,
+          "project_views": 83229962,
+          "share_ppm": 171.2725,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-10",
+          "views": 16794,
+          "views_main": 15450,
+          "project_views": 82234467,
+          "share_ppm": 204.2209,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-11",
+          "views": 16718,
+          "views_main": 15380,
+          "project_views": 83935329,
+          "share_ppm": 199.1772,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-12",
+          "views": 17870,
+          "views_main": 16440,
+          "project_views": 82617015,
+          "share_ppm": 216.2993,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-01",
+          "views": 29005,
+          "views_main": 26684,
+          "project_views": 82781702,
+          "share_ppm": 350.3794,
+          "spike_excess": 10877
+        },
+        {
+          "month": "2026-02",
+          "views": 17657,
+          "views_main": 16244,
+          "project_views": 82044472,
+          "share_ppm": 215.2125,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-03",
+          "views": 18821,
+          "views_main": 17315,
+          "project_views": 80778463,
+          "share_ppm": 232.9953,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-04",
+          "views": 16495,
+          "views_main": 15175,
+          "project_views": 81271856,
+          "share_ppm": 202.9608,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-05",
+          "views": 15423,
+          "views_main": 14189,
+          "project_views": 80408709,
+          "share_ppm": 191.8076,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-06",
+          "views": 14386,
+          "views_main": 13235,
+          "project_views": 81560936,
+          "share_ppm": 176.3835,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-07",
+          "views": 13942,
+          "views_main": 12826,
+          "project_views": 80246879,
+          "share_ppm": 173.7388,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-08",
+          "views": 13747,
+          "views_main": 12647,
+          "project_views": 79952630,
+          "share_ppm": 171.9393,
+          "spike_excess": 0
+        }
+      ],
+      "metrics": {
+        "avg_daily_views_12m": 561.95,
+        "share_ppm_12m": 209.0723,
+        "yoy_rel": 0.2509,
+        "yoy_rel_ci": [
+          0.1699,
+          0.3409
+        ],
+        "yoy_raw": 0.1796,
+        "yoy_raw_ci": [
+          0.0896,
+          0.2696
+        ],
+        "project_yoy": -0.057,
+        "prior_yoy_rel": 0.1614,
+        "cagr_rel": 0.2054,
+        "yoy_rel_ex_spikes": 0.1846,
+        "spike_share": 0.0287,
+        "top_spikes": [
+          {
+            "day": "2026-01-12",
+            "views": 3780,
+            "baseline": 420.0
+          }
+        ],
+        "peak_month": null,
+        "seasonality_amplitude": 0.36,
+        "redirect_share": 0.08,
+        "data_start": "2015-07-01"
+      },
+      "variants": [
+        {
+          "name": "ex_spikes",
+          "yoy_rel": 0.1846,
+          "yoy_rel_ci": null,
+          "direction": "growing"
+        },
+        {
+          "name": "shifted_6m",
+          "yoy_rel": 0.2008,
+          "yoy_rel_ci": null,
+          "direction": "growing"
+        },
+        {
+          "name": "no_redirects",
+          "yoy_rel": 0.2434,
+          "yoy_rel_ci": null,
+          "direction": "growing"
+        }
+      ],
+      "verdict": {
+        "direction": "growing",
+        "confidence": "High",
+        "reasons": [
+          "Enough volume, consistent across months and robust in all sensitivity variants."
+        ]
+      },
+      "criteria": null
+    },
+    {
+      "key": "t1|pl",
+      "topic_id": "t1",
+      "topic_label": "Шахи",
+      "lang": "pl",
+      "project": "pl.wikipedia.org",
+      "status": "ok",
+      "note": null,
+      "articles": [
+        {
+          "title": "Szachy",
+          "source": "Q718",
+          "redirects_included": 3,
+          "redirects_total": 3,
+          "data_start": "2015-07-01"
+        }
+      ],
+      "monthly": [
+        {
+          "month": "2023-09",
+          "views": 17226,
+          "views_main": 15847,
+          "project_views": 183550290,
+          "share_ppm": 93.8489,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-10",
+          "views": 19672,
+          "views_main": 18098,
+          "project_views": 177213438,
+          "share_ppm": 111.0074,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-11",
+          "views": 19467,
+          "views_main": 17909,
+          "project_views": 178713393,
+          "share_ppm": 108.9286,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-12",
+          "views": 20242,
+          "views_main": 18622,
+          "project_views": 176016560,
+          "share_ppm": 115.0005,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-01",
+          "views": 21018,
+          "views_main": 19336,
+          "project_views": 172384648,
+          "share_ppm": 121.925,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-02",
+          "views": 19086,
+          "views_main": 17559,
+          "project_views": 175719097,
+          "share_ppm": 108.6165,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-03",
+          "views": 19617,
+          "views_main": 18047,
+          "project_views": 170906963,
+          "share_ppm": 114.7817,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-04",
+          "views": 18270,
+          "views_main": 16808,
+          "project_views": 174001718,
+          "share_ppm": 104.999,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-05",
+          "views": 16832,
+          "views_main": 15485,
+          "project_views": 169921155,
+          "share_ppm": 99.0577,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-06",
+          "views": 16256,
+          "views_main": 14955,
+          "project_views": 171681256,
+          "share_ppm": 94.6871,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-07",
+          "views": 16967,
+          "views_main": 15609,
+          "project_views": 170362170,
+          "share_ppm": 99.5937,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-08",
+          "views": 16309,
+          "views_main": 15004,
+          "project_views": 166189685,
+          "share_ppm": 98.1349,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-09",
+          "views": 16973,
+          "views_main": 15615,
+          "project_views": 168144893,
+          "share_ppm": 100.9427,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-10",
+          "views": 20381,
+          "views_main": 18750,
+          "project_views": 162157033,
+          "share_ppm": 125.6868,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-11",
+          "views": 19350,
+          "views_main": 17802,
+          "project_views": 161563570,
+          "share_ppm": 119.7671,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-12",
+          "views": 21201,
+          "views_main": 19504,
+          "project_views": 162086179,
+          "share_ppm": 130.8008,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-01",
+          "views": 22567,
+          "views_main": 20761,
+          "project_views": 159532221,
+          "share_ppm": 141.4573,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-02",
+          "views": 18666,
+          "views_main": 17172,
+          "project_views": 159426898,
+          "share_ppm": 117.0819,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-03",
+          "views": 20612,
+          "views_main": 18963,
+          "project_views": 159259440,
+          "share_ppm": 129.424,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-04",
+          "views": 19909,
+          "views_main": 18316,
+          "project_views": 158940009,
+          "share_ppm": 125.2611,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-05",
+          "views": 18112,
+          "views_main": 16663,
+          "project_views": 157382663,
+          "share_ppm": 115.0826,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-06",
+          "views": 16832,
+          "views_main": 15485,
+          "project_views": 152785915,
+          "share_ppm": 110.1672,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-07",
+          "views": 17466,
+          "views_main": 16068,
+          "project_views": 156214038,
+          "share_ppm": 111.8081,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-08",
+          "views": 17858,
+          "views_main": 16429,
+          "project_views": 155242219,
+          "share_ppm": 115.0331,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-09",
+          "views": 17383,
+          "views_main": 15992,
+          "project_views": 151736368,
+          "share_ppm": 114.5605,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-10",
+          "views": 18768,
+          "views_main": 17266,
+          "project_views": 152109761,
+          "share_ppm": 123.3846,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-11",
+          "views": 19456,
+          "views_main": 17899,
+          "project_views": 147649186,
+          "share_ppm": 131.7718,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-12",
+          "views": 21559,
+          "views_main": 19834,
+          "project_views": 147193536,
+          "share_ppm": 146.467,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-01",
+          "views": 22337,
+          "views_main": 20550,
+          "project_views": 145523953,
+          "share_ppm": 153.4936,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-02",
+          "views": 19030,
+          "views_main": 17507,
+          "project_views": 145097174,
+          "share_ppm": 131.1535,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-03",
+          "views": 20338,
+          "views_main": 18710,
+          "project_views": 145333672,
+          "share_ppm": 139.94,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-04",
+          "views": 18163,
+          "views_main": 16709,
+          "project_views": 147291948,
+          "share_ppm": 123.3129,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-05",
+          "views": 18692,
+          "views_main": 17196,
+          "project_views": 142088224,
+          "share_ppm": 131.5521,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-06",
+          "views": 16314,
+          "views_main": 15008,
+          "project_views": 142242635,
+          "share_ppm": 114.6914,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-07",
+          "views": 16723,
+          "views_main": 15385,
+          "project_views": 139981138,
+          "share_ppm": 119.4661,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-08",
+          "views": 18161,
+          "views_main": 16708,
+          "project_views": 143925038,
+          "share_ppm": 126.1837,
+          "spike_excess": 0
+        }
+      ],
+      "metrics": {
+        "avg_daily_views_12m": 621.71,
+        "share_ppm_12m": 129.6581,
+        "yoy_rel": 0.0786,
+        "yoy_rel_ci": [
+          -0.0024,
+          0.1686
+        ],
+        "yoy_raw": -0.0131,
+        "yoy_raw_ci": [
+          -0.1031,
+          0.0769
+        ],
+        "project_yoy": -0.085,
+        "prior_yoy_rel": 0.1352,
+        "cagr_rel": 0.1065,
+        "yoy_rel_ex_spikes": 0.0786,
+        "spike_share": 0.0,
+        "top_spikes": [],
+        "peak_month": null,
+        "seasonality_amplitude": 0.3,
+        "redirect_share": 0.08,
+        "data_start": "2015-07-01"
+      },
+      "variants": [
+        {
+          "name": "ex_spikes",
+          "yoy_rel": 0.0786,
+          "yoy_rel_ci": null,
+          "direction": "uncertain"
+        },
+        {
+          "name": "shifted_6m",
+          "yoy_rel": 0.0629,
+          "yoy_rel_ci": null,
+          "direction": "uncertain"
+        },
+        {
+          "name": "no_redirects",
+          "yoy_rel": 0.0763,
+          "yoy_rel_ci": null,
+          "direction": "uncertain"
+        }
+      ],
+      "verdict": {
+        "direction": "uncertain",
+        "confidence": "Low",
+        "reasons": [
+          "Direction not established: the 95% interval spans both growth and decline."
+        ]
+      },
+      "criteria": null
+    },
+    {
+      "key": "t1|cs",
+      "topic_id": "t1",
+      "topic_label": "Шахи",
+      "lang": "cs",
+      "project": "cs.wikipedia.org",
+      "status": "ok",
+      "note": null,
+      "articles": [
+        {
+          "title": "Šachy",
+          "source": "Q718",
+          "redirects_included": 3,
+          "redirects_total": 3,
+          "data_start": "2015-07-01"
+        }
+      ],
+      "monthly": [
+        {
+          "month": "2023-09",
+          "views": 5377,
+          "views_main": 4946,
+          "project_views": 55963789,
+          "share_ppm": 96.08,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-10",
+          "views": 5771,
+          "views_main": 5309,
+          "project_views": 54969196,
+          "share_ppm": 104.9861,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-11",
+          "views": 6084,
+          "views_main": 5597,
+          "project_views": 55192158,
+          "share_ppm": 110.2331,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-12",
+          "views": 6741,
+          "views_main": 6201,
+          "project_views": 54822566,
+          "share_ppm": 122.9603,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-01",
+          "views": 5914,
+          "views_main": 5440,
+          "project_views": 56434307,
+          "share_ppm": 104.7944,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-02",
+          "views": 5462,
+          "views_main": 5025,
+          "project_views": 54512148,
+          "share_ppm": 100.1978,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-03",
+          "views": 5261,
+          "views_main": 4840,
+          "project_views": 54110191,
+          "share_ppm": 97.2275,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-04",
+          "views": 4525,
+          "views_main": 4163,
+          "project_views": 56066753,
+          "share_ppm": 80.7074,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-05",
+          "views": 4421,
+          "views_main": 4067,
+          "project_views": 55304970,
+          "share_ppm": 79.9386,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-06",
+          "views": 3812,
+          "views_main": 3507,
+          "project_views": 54443366,
+          "share_ppm": 70.0177,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-07",
+          "views": 3981,
+          "views_main": 3662,
+          "project_views": 55190332,
+          "share_ppm": 72.1322,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-08",
+          "views": 4484,
+          "views_main": 4125,
+          "project_views": 55065925,
+          "share_ppm": 81.4297,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-09",
+          "views": 4654,
+          "views_main": 4281,
+          "project_views": 53718224,
+          "share_ppm": 86.6373,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-10",
+          "views": 5543,
+          "views_main": 5099,
+          "project_views": 55233272,
+          "share_ppm": 100.3562,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-11",
+          "views": 5688,
+          "views_main": 5232,
+          "project_views": 54706621,
+          "share_ppm": 103.9728,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-12",
+          "views": 5925,
+          "views_main": 5451,
+          "project_views": 54425177,
+          "share_ppm": 108.8651,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-01",
+          "views": 5339,
+          "views_main": 4911,
+          "project_views": 53809213,
+          "share_ppm": 99.2209,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-02",
+          "views": 4545,
+          "views_main": 4181,
+          "project_views": 52624437,
+          "share_ppm": 86.3667,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-03",
+          "views": 4345,
+          "views_main": 3997,
+          "project_views": 53026960,
+          "share_ppm": 81.9395,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-04",
+          "views": 3854,
+          "views_main": 3545,
+          "project_views": 53774317,
+          "share_ppm": 71.6699,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-05",
+          "views": 3932,
+          "views_main": 3617,
+          "project_views": 53115735,
+          "share_ppm": 74.027,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-06",
+          "views": 3635,
+          "views_main": 3344,
+          "project_views": 54129617,
+          "share_ppm": 67.1536,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-07",
+          "views": 3848,
+          "views_main": 3540,
+          "project_views": 52671817,
+          "share_ppm": 73.0561,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-08",
+          "views": 3798,
+          "views_main": 3494,
+          "project_views": 52247144,
+          "share_ppm": 72.693,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-09",
+          "views": 4029,
+          "views_main": 3706,
+          "project_views": 52067332,
+          "share_ppm": 77.3806,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-10",
+          "views": 4772,
+          "views_main": 4390,
+          "project_views": 53398384,
+          "share_ppm": 89.366,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-11",
+          "views": 4998,
+          "views_main": 4598,
+          "project_views": 52380550,
+          "share_ppm": 95.4171,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-12",
+          "views": 5114,
+          "views_main": 4704,
+          "project_views": 52917440,
+          "share_ppm": 96.6411,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-01",
+          "views": 4616,
+          "views_main": 4246,
+          "project_views": 52493171,
+          "share_ppm": 87.9352,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-02",
+          "views": 4270,
+          "views_main": 3928,
+          "project_views": 52613396,
+          "share_ppm": 81.158,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-03",
+          "views": 4175,
+          "views_main": 3841,
+          "project_views": 51848426,
+          "share_ppm": 80.5232,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-04",
+          "views": 3358,
+          "views_main": 3089,
+          "project_views": 52361126,
+          "share_ppm": 64.1315,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-05",
+          "views": 3214,
+          "views_main": 2956,
+          "project_views": 52252527,
+          "share_ppm": 61.509,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-06",
+          "views": 3211,
+          "views_main": 2954,
+          "project_views": 51285789,
+          "share_ppm": 62.6099,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-07",
+          "views": 3173,
+          "views_main": 2919,
+          "project_views": 52287882,
+          "share_ppm": 60.6833,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-08",
+          "views": 3552,
+          "views_main": 3267,
+          "project_views": 50563227,
+          "share_ppm": 70.2487,
+          "spike_excess": 0
+        }
+      ],
+      "metrics": {
+        "avg_daily_views_12m": 132.83,
+        "share_ppm_12m": 77.3893,
+        "yoy_rel": -0.0963,
+        "yoy_rel_ci": [
+          -0.1773,
+          -0.0063
+        ],
+        "yoy_raw": -0.1202,
+        "yoy_raw_ci": [
+          -0.2102,
+          -0.0302
+        ],
+        "project_yoy": -0.0264,
+        "prior_yoy_rel": -0.083,
+        "cagr_rel": -0.0897,
+        "yoy_rel_ex_spikes": -0.0963,
+        "spike_share": 0.0,
+        "top_spikes": [],
+        "peak_month": null,
+        "seasonality_amplitude": 0.4,
+        "redirect_share": 0.08,
+        "data_start": "2015-07-01"
+      },
+      "variants": [
+        {
+          "name": "ex_spikes",
+          "yoy_rel": -0.0963,
+          "yoy_rel_ci": null,
+          "direction": "declining"
+        },
+        {
+          "name": "shifted_6m",
+          "yoy_rel": -0.077,
+          "yoy_rel_ci": null,
+          "direction": "declining"
+        },
+        {
+          "name": "no_redirects",
+          "yoy_rel": -0.0934,
+          "yoy_rel_ci": null,
+          "direction": "declining"
+        }
+      ],
+      "verdict": {
+        "direction": "declining",
+        "confidence": "High",
+        "reasons": [
+          "Enough volume, consistent across months and robust in all sensitivity variants."
+        ]
+      },
+      "criteria": null
+    },
+    {
+      "key": "t2|uk",
+      "topic_id": "t2",
+      "topic_label": "Žonglování",
+      "lang": "uk",
+      "project": "uk.wikipedia.org",
+      "status": "missing",
+      "note": "No article about this topic in uk.wikipedia.org (no Wikidata sitelink).",
+      "articles": [],
+      "monthly": [],
+      "metrics": {},
+      "variants": [],
+      "verdict": {
+        "direction": "n/a",
+        "confidence": "n/a",
+        "reasons": [
+          "No article in this language edition."
+        ]
+      },
+      "criteria": null
+    },
+    {
+      "key": "t2|pl",
+      "topic_id": "t2",
+      "topic_label": "Žonglování",
+      "lang": "pl",
+      "project": "pl.wikipedia.org",
+      "status": "ok",
+      "note": null,
+      "articles": [
+        {
+          "title": "Żonglerka",
+          "source": "explicit",
+          "redirects_included": 3,
+          "redirects_total": 3,
+          "data_start": "2015-07-01"
+        }
+      ],
+      "monthly": [
+        {
+          "month": "2023-09",
+          "views": 841,
+          "views_main": 773,
+          "project_views": 177488285,
+          "share_ppm": 4.7383,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-10",
+          "views": 827,
+          "views_main": 760,
+          "project_views": 180945144,
+          "share_ppm": 4.5704,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-11",
+          "views": 614,
+          "views_main": 564,
+          "project_views": 179834284,
+          "share_ppm": 3.4143,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-12",
+          "views": 603,
+          "views_main": 554,
+          "project_views": 177395637,
+          "share_ppm": 3.3992,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-01",
+          "views": 532,
+          "views_main": 489,
+          "project_views": 175406737,
+          "share_ppm": 3.033,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-02",
+          "views": 529,
+          "views_main": 486,
+          "project_views": 170475737,
+          "share_ppm": 3.1031,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-03",
+          "views": 755,
+          "views_main": 694,
+          "project_views": 173683587,
+          "share_ppm": 4.347,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-04",
+          "views": 856,
+          "views_main": 787,
+          "project_views": 174428316,
+          "share_ppm": 4.9075,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-05",
+          "views": 1048,
+          "views_main": 964,
+          "project_views": 172799049,
+          "share_ppm": 6.0648,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-06",
+          "views": 1200,
+          "views_main": 1104,
+          "project_views": 167133855,
+          "share_ppm": 7.1799,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-07",
+          "views": 1222,
+          "views_main": 1124,
+          "project_views": 166526817,
+          "share_ppm": 7.3382,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-08",
+          "views": 1200,
+          "views_main": 1104,
+          "project_views": 167331225,
+          "share_ppm": 7.1714,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-09",
+          "views": 1069,
+          "views_main": 983,
+          "project_views": 165063539,
+          "share_ppm": 6.4763,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-10",
+          "views": 943,
+          "views_main": 867,
+          "project_views": 167150468,
+          "share_ppm": 5.6416,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-11",
+          "views": 788,
+          "views_main": 724,
+          "project_views": 163041267,
+          "share_ppm": 4.8331,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-12",
+          "views": 720,
+          "views_main": 662,
+          "project_views": 164806546,
+          "share_ppm": 4.3688,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-01",
+          "views": 671,
+          "views_main": 617,
+          "project_views": 163751847,
+          "share_ppm": 4.0977,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-02",
+          "views": 669,
+          "views_main": 615,
+          "project_views": 160149073,
+          "share_ppm": 4.1774,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-03",
+          "views": 896,
+          "views_main": 824,
+          "project_views": 155780022,
+          "share_ppm": 5.7517,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-04",
+          "views": 1060,
+          "views_main": 975,
+          "project_views": 155738647,
+          "share_ppm": 6.8063,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-05",
+          "views": 1242,
+          "views_main": 1142,
+          "project_views": 158520398,
+          "share_ppm": 7.835,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-06",
+          "views": 1387,
+          "views_main": 1276,
+          "project_views": 155396231,
+          "share_ppm": 8.9256,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-07",
+          "views": 1617,
+          "views_main": 1487,
+          "project_views": 154832988,
+          "share_ppm": 10.4435,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-08",
+          "views": 1516,
+          "views_main": 1394,
+          "project_views": 153526897,
+          "share_ppm": 9.8745,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-09",
+          "views": 1386,
+          "views_main": 1275,
+          "project_views": 154084379,
+          "share_ppm": 8.9951,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-10",
+          "views": 1175,
+          "views_main": 1081,
+          "project_views": 151661961,
+          "share_ppm": 7.7475,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-11",
+          "views": 973,
+          "views_main": 895,
+          "project_views": 148908694,
+          "share_ppm": 6.5342,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-12",
+          "views": 921,
+          "views_main": 847,
+          "project_views": 149255073,
+          "share_ppm": 6.1706,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-01",
+          "views": 854,
+          "views_main": 785,
+          "project_views": 149716841,
+          "share_ppm": 5.7041,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-02",
+          "views": 877,
+          "views_main": 806,
+          "project_views": 146815786,
+          "share_ppm": 5.9735,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-03",
+          "views": 1811,
+          "views_main": 1666,
+          "project_views": 146163364,
+          "share_ppm": 12.3902,
+          "spike_excess": 679
+        },
+        {
+          "month": "2026-04",
+          "views": 1336,
+          "views_main": 1229,
+          "project_views": 146237796,
+          "share_ppm": 9.1358,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-05",
+          "views": 1641,
+          "views_main": 1509,
+          "project_views": 144306054,
+          "share_ppm": 11.3717,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-06",
+          "views": 1800,
+          "views_main": 1656,
+          "project_views": 145643716,
+          "share_ppm": 12.3589,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-07",
+          "views": 2015,
+          "views_main": 1853,
+          "project_views": 144265893,
+          "share_ppm": 13.9673,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-08",
+          "views": 2038,
+          "views_main": 1874,
+          "project_views": 139783898,
+          "share_ppm": 14.5796,
+          "spike_excess": 0
+        }
+      ],
+      "metrics": {
+        "avg_daily_views_12m": 46.1,
+        "share_ppm_12m": 9.5238,
+        "yoy_rel": 0.4521,
+        "yoy_rel_ci": [
+          0.1821,
+          0.7521
+        ],
+        "yoy_raw": 0.3378,
+        "yoy_raw_ci": [
+          0.0378,
+          0.6378
+        ],
+        "project_yoy": -0.0787,
+        "prior_yoy_rel": 0.3361,
+        "cagr_rel": 0.3929,
+        "yoy_rel_ex_spikes": 0.3935,
+        "spike_share": 0.0231,
+        "top_spikes": [
+          {
+            "day": "2026-03-12",
+            "views": 225,
+            "baseline": 25.0
+          }
+        ],
+        "peak_month": 7,
+        "seasonality_amplitude": 0.7,
+        "redirect_share": 0.08,
+        "data_start": "2015-07-01"
+      },
+      "variants": [
+        {
+          "name": "ex_spikes",
+          "yoy_rel": 0.3935,
+          "yoy_rel_ci": null,
+          "direction": "growing"
+        },
+        {
+          "name": "shifted_6m",
+          "yoy_rel": 0.3617,
+          "yoy_rel_ci": null,
+          "direction": "growing"
+        },
+        {
+          "name": "no_redirects",
+          "yoy_rel": 0.4385,
+          "yoy_rel_ci": null,
+          "direction": "growing"
+        }
+      ],
+      "verdict": {
+        "direction": "growing",
+        "confidence": "Medium",
+        "reasons": [
+          "Moderate volume: 46 views/day."
+        ]
+      },
+      "criteria": null
+    },
+    {
+      "key": "t2|cs",
+      "topic_id": "t2",
+      "topic_label": "Žonglování",
+      "lang": "cs",
+      "project": "cs.wikipedia.org",
+      "status": "ok",
+      "note": null,
+      "articles": [
+        {
+          "title": "Žonglování",
+          "source": "explicit",
+          "redirects_included": 3,
+          "redirects_total": 3,
+          "data_start": "2015-07-01"
+        }
+      ],
+      "monthly": [
+        {
+          "month": "2023-09",
+          "views": 326,
+          "views_main": 299,
+          "project_views": 56992918,
+          "share_ppm": 5.72,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-10",
+          "views": 291,
+          "views_main": 267,
+          "project_views": 55047278,
+          "share_ppm": 5.2864,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-11",
+          "views": 207,
+          "views_main": 190,
+          "project_views": 55587435,
+          "share_ppm": 3.7239,
+          "spike_excess": 0
+        },
+        {
+          "month": "2023-12",
+          "views": 175,
+          "views_main": 161,
+          "project_views": 54998628,
+          "share_ppm": 3.1819,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-01",
+          "views": 161,
+          "views_main": 148,
+          "project_views": 55810087,
+          "share_ppm": 2.8848,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-02",
+          "views": 180,
+          "views_main": 165,
+          "project_views": 56171899,
+          "share_ppm": 3.2044,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-03",
+          "views": 219,
+          "views_main": 201,
+          "project_views": 55630395,
+          "share_ppm": 3.9367,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-04",
+          "views": 283,
+          "views_main": 260,
+          "project_views": 54228143,
+          "share_ppm": 5.2187,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-05",
+          "views": 361,
+          "views_main": 332,
+          "project_views": 55900572,
+          "share_ppm": 6.4579,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-06",
+          "views": 364,
+          "views_main": 334,
+          "project_views": 55725931,
+          "share_ppm": 6.532,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-07",
+          "views": 401,
+          "views_main": 368,
+          "project_views": 54568637,
+          "share_ppm": 7.3485,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-08",
+          "views": 415,
+          "views_main": 381,
+          "project_views": 55182225,
+          "share_ppm": 7.5205,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-09",
+          "views": 326,
+          "views_main": 299,
+          "project_views": 54171210,
+          "share_ppm": 6.018,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-10",
+          "views": 294,
+          "views_main": 270,
+          "project_views": 53833613,
+          "share_ppm": 5.4613,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-11",
+          "views": 220,
+          "views_main": 202,
+          "project_views": 53652630,
+          "share_ppm": 4.1005,
+          "spike_excess": 0
+        },
+        {
+          "month": "2024-12",
+          "views": 198,
+          "views_main": 182,
+          "project_views": 52871787,
+          "share_ppm": 3.7449,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-01",
+          "views": 179,
+          "views_main": 164,
+          "project_views": 53643209,
+          "share_ppm": 3.3369,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-02",
+          "views": 166,
+          "views_main": 152,
+          "project_views": 53273458,
+          "share_ppm": 3.116,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-03",
+          "views": 243,
+          "views_main": 223,
+          "project_views": 53525236,
+          "share_ppm": 4.5399,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-04",
+          "views": 276,
+          "views_main": 253,
+          "project_views": 54398800,
+          "share_ppm": 5.0736,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-05",
+          "views": 375,
+          "views_main": 345,
+          "project_views": 54232393,
+          "share_ppm": 6.9147,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-06",
+          "views": 377,
+          "views_main": 346,
+          "project_views": 52595281,
+          "share_ppm": 7.1679,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-07",
+          "views": 403,
+          "views_main": 370,
+          "project_views": 53549576,
+          "share_ppm": 7.5257,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-08",
+          "views": 401,
+          "views_main": 368,
+          "project_views": 52041573,
+          "share_ppm": 7.7054,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-09",
+          "views": 353,
+          "views_main": 324,
+          "project_views": 53557502,
+          "share_ppm": 6.591,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-10",
+          "views": 320,
+          "views_main": 294,
+          "project_views": 52049357,
+          "share_ppm": 6.148,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-11",
+          "views": 229,
+          "views_main": 210,
+          "project_views": 53302572,
+          "share_ppm": 4.2962,
+          "spike_excess": 0
+        },
+        {
+          "month": "2025-12",
+          "views": 205,
+          "views_main": 188,
+          "project_views": 52709895,
+          "share_ppm": 3.8892,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-01",
+          "views": 178,
+          "views_main": 163,
+          "project_views": 51234993,
+          "share_ppm": 3.4742,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-02",
+          "views": 189,
+          "views_main": 173,
+          "project_views": 51870495,
+          "share_ppm": 3.6437,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-03",
+          "views": 239,
+          "views_main": 219,
+          "project_views": 52803934,
+          "share_ppm": 4.5262,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-04",
+          "views": 311,
+          "views_main": 286,
+          "project_views": 52386993,
+          "share_ppm": 5.9366,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-05",
+          "views": 362,
+          "views_main": 333,
+          "project_views": 52366952,
+          "share_ppm": 6.9128,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-06",
+          "views": 394,
+          "views_main": 362,
+          "project_views": 52247685,
+          "share_ppm": 7.541,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-07",
+          "views": 446,
+          "views_main": 410,
+          "project_views": 51039298,
+          "share_ppm": 8.7384,
+          "spike_excess": 0
+        },
+        {
+          "month": "2026-08",
+          "views": 435,
+          "views_main": 400,
+          "project_views": 52114077,
+          "share_ppm": 8.3471,
+          "spike_excess": 0
+        }
+      ],
+      "metrics": {
+        "avg_daily_views_12m": 10.03,
+        "share_ppm_12m": 5.8326,
+        "yoy_rel": 0.0825,
+        "yoy_rel_ci": [
+          -0.5925,
+          0.8325
+        ],
+        "yoy_raw": 0.0587,
+        "yoy_raw_ci": [
+          -0.6913,
+          0.8087
+        ],
+        "project_yoy": -0.022,
+        "prior_yoy_rel": 0.0605,
+        "cagr_rel": 0.0714,
+        "yoy_rel_ex_spikes": 0.0825,
+        "spike_share": 0.0,
+        "top_spikes": [],
+        "peak_month": 7,
+        "seasonality_amplitude": 0.8,
+        "redirect_share": 0.08,
+        "data_start": "2015-07-01"
+      },
+      "variants": [
+        {
+          "name": "ex_spikes",
+          "yoy_rel": 0.0825,
+          "yoy_rel_ci": null,
+          "direction": "uncertain"
+        },
+        {
+          "name": "shifted_6m",
+          "yoy_rel": 0.066,
+          "yoy_rel_ci": null,
+          "direction": "uncertain"
+        },
+        {
+          "name": "no_redirects",
+          "yoy_rel": 0.08,
+          "yoy_rel_ci": null,
+          "direction": "uncertain"
+        }
+      ],
+      "verdict": {
+        "direction": "uncertain",
+        "confidence": "Low",
+        "reasons": [
+          "Moderate volume: 10 views/day.",
+          "Direction not established: the 95% interval spans both growth and decline."
+        ]
+      },
+      "criteria": null
+    }
+  ],
+  "comparison": {
+    "rank_by": "growth",
+    "ranking": [
+      {
+        "key": "t2|pl",
+        "label": "Žonglování · pl",
+        "value": 0.4521
+      },
+      {
+        "key": "t1|uk",
+        "label": "Шахи · uk",
+        "value": 0.2509
+      },
+      {
+        "key": "t2|cs",
+        "label": "Žonglování · cs",
+        "value": 0.0825
+      },
+      {
+        "key": "t1|pl",
+        "label": "Шахи · pl",
+        "value": 0.0786
+      },
+      {
+        "key": "t1|cs",
+        "label": "Шахи · cs",
+        "value": -0.0963
+      }
+    ],
+    "leader_stable": "2/3 variants",
+    "leader_ci_overlap": true,
+    "notes": [
+      "Žonglování · uk is not measurable (no article) and is excluded from the ranking."
+    ]
+  },
+  "caveats": [
+    "Wikipedia views measure informational interest, not purchase intent or willingness to pay.",
+    "A language edition is not a country: readers of a language live in many countries, and many people read other editions (often English).",
+    "Human pageviews across Wikipedia fell in 2025 (AI answers, bot reclassification); growth is therefore measured as a share of each edition's views.",
+    "Only articles linked to the topic (and their redirects) are counted; interest expressed in other articles is not."
+  ],
+  "warnings": [
+    "Žonglování · uk: no article linked in Ukrainian Wikipedia — not measurable.",
+    "Žonglování · cs: fewer than 10 views/day — treat the trend as indicative only."
+  ],
+  "files": {
+    "dir": "/tmp/example-analysis",
+    "results": "/tmp/example-analysis/results.json"
+  }
+}
